@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* Brand: gradient from navy #023b77 to teal #039583 */
+@theme {
+  --font-sans: "Noto Sans", "Noto Sans Devanagari", ui-sans-serif, system-ui, sans-serif;
+  --font-marathi: "Noto Sans Devanagari", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* Navy — primary (#023b77) */
+  --color-brand-50: #eaf1f9;
+  --color-brand-100: #cddcee;
+  --color-brand-200: #9fbbdd;
+  --color-brand-500: #0b5aa6;
+  --color-brand-600: #034a91;
+  --color-brand-700: #023b77;
+  --color-brand-800: #02305f;
+
+  /* Teal — secondary (#039583) */
+  --color-accent-50: #e6f6f3;
+  --color-accent-100: #c0e9e2;
+  --color-accent-500: #039583;
+  --color-accent-600: #027d6e;
+  --color-accent-700: #026659;
+}
+
+@utility bg-brand-gradient {
+  background-image: linear-gradient(135deg, #023b77 0%, #039583 100%);
+}
+
+@utility text-brand-gradient {
+  background-image: linear-gradient(90deg, #023b77 0%, #039583 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Devanagari needs a little more line height to avoid clipping matras */
+html[lang="mr"] body {
+  font-family: var(--font-marathi);
+  line-height: 1.7;
+}

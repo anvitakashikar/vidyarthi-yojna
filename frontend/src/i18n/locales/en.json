@@ -1,0 +1,683 @@
+{
+  "app": {
+    "name": "Vidyarthi Yojna",
+    "tagline": "Schemes and scholarships for every student"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "logout": "Logout",
+    "language": "Language",
+    "menu": "Menu",
+    "donate": "Donate"
+  },
+  "roles": {
+    "student": "Student",
+    "donor": "Donor",
+    "admin": "Admin"
+  },
+  "home": {
+    "title": "Welcome to Vidyarthi Yojna",
+    "subtitle": "Find, apply for and track government and institutional schemes for students — all in one place.",
+    "cta": "Register as a student",
+    "portalsTitle": "Choose your portal",
+    "portal": {
+      "student": {
+        "title": "Students",
+        "desc": "Apply for schemes and scholarships and track your applications."
+      },
+      "donor": {
+        "title": "Donors",
+        "desc": "Support deserving students and see the impact of your contributions."
+      },
+      "admin": {
+        "title": "Administrators",
+        "desc": "Manage users, schemes and applications."
+      }
+    },
+    "featuresTitle": "What you can do",
+    "feature1Title": "Discover schemes",
+    "feature1Desc": "Browse scholarships and student welfare schemes you are eligible for.",
+    "feature2Title": "Apply online",
+    "feature2Desc": "Submit applications and documents without visiting an office.",
+    "feature3Title": "Track status",
+    "feature3Desc": "Stay updated on every application at each stage.",
+    "apiStatus": "Server status",
+    "apiChecking": "Checking…",
+    "apiOnline": "Server and database are running",
+    "apiDbDown": "Server is running but the database is unavailable",
+    "apiOffline": "Server is not reachable"
+  },
+  "auth": {
+    "login": "Login",
+    "loggingIn": "Logging in…",
+    "register": "Create account",
+    "registering": "Creating account…",
+    "loginTitle": "{{role}} login",
+    "registerTitle": "{{role}} registration",
+    "loginSubtitle": {
+      "student": "Log in to apply for schemes and track your applications.",
+      "donor": "Log in to manage your donations.",
+      "admin": "Log in to the administration panel."
+    },
+    "registerSubtitle": {
+      "student": "Create a student account to apply for schemes.",
+      "donor": "Create your donor account. Next, you will add your bank and PAN card details."
+    },
+    "fullName": "Full name",
+    "email": "Email",
+    "phoneOptional": "Mobile number (optional)",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "passwordHint": "At least 8 characters",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordMismatch": "Passwords do not match",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "haveAccount": "Already have an account?",
+    "loginHere": "Log in here",
+    "adminNote": "Admin accounts are created by an existing administrator.",
+    "identifier": "Mobile number or email",
+    "phone": "Mobile number",
+    "phoneHint": "You will use this number to log in",
+    "emailOptional": "Email (optional)",
+    "invalidPhone": "Enter a valid 10-digit mobile number",
+    "emailRequired": "Email is required"
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}",
+    "subtitle": {
+      "student": "Your student dashboard",
+      "donor": "Your donor dashboard",
+      "admin": "Administration panel"
+    },
+    "comingSoon": "Coming soon",
+    "student": {
+      "schemes": "Available schemes",
+      "applications": "My applications"
+    },
+    "donor": {
+      "donations": "My donations",
+      "students": "Students supported",
+      "profile": "My details"
+    }
+  },
+  "admin": {
+    "count": {
+      "student": "Students",
+      "donor": "Donors",
+      "admin": "Admins"
+    },
+    "users": "Users",
+    "filterByRole": "Role",
+    "allRoles": "All",
+    "role": "Role",
+    "joined": "Joined",
+    "noUsers": "No users found",
+    "createUser": "Add a user",
+    "createUserHint": "Create accounts for new administrators, students or donors.",
+    "create": "Create user",
+    "userCreated": "{{name}} was added as {{role}}",
+    "tabs": {
+      "overview": "Home",
+      "students": "Student directory",
+      "requirements": "Requirements",
+      "donors": "Donors",
+      "payments": "Payments",
+      "donations": "Donations"
+    }
+  },
+  "about": {
+    "title": "About Vidyarthi Yojna",
+    "body": "Vidyarthi Yojna is a platform that helps students access education schemes and scholarships easily, in English and Marathi."
+  },
+  "contact": {
+    "title": "Contact us",
+    "body": "Have a question? Reach out to us and we will get back to you.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you are looking for does not exist.",
+    "back": "Go to home"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  },
+  "errors": {
+    "network": "Cannot reach the server. Please check your connection.",
+    "error": {
+      "not_found": "The requested resource was not found",
+      "validation": "Some of the submitted data is invalid",
+      "server": "Something went wrong. Please try again later."
+    },
+    "auth": {
+      "invalid_credentials": "Incorrect mobile number / email or password",
+      "email_exists": "An account with this email already exists",
+      "wrong_portal": "This account is registered as {{role}}. Please use the {{role}} login.",
+      "inactive": "This account has been deactivated. Please contact the administrator.",
+      "not_authenticated": "Please log in to continue",
+      "invalid_token": "Your session has expired. Please log in again.",
+      "forbidden": "You do not have permission to access this",
+      "phone_exists": "An account with this mobile number already exists"
+    },
+    "student": {
+      "invalid_aadhaar": "Enter a valid 12-digit Aadhaar number",
+      "aadhaar_exists": "This Aadhaar number is already registered with another account",
+      "aadhaar_file_required": "Please upload your Aadhaar card",
+      "invalid_ifsc": "Enter a valid 11-character IFSC code",
+      "invalid_account_number": "Enter a valid bank account number (9 to 18 digits)",
+      "invalid_holder_name": "Enter the account holder's name",
+      "document_not_found": "Document not found",
+      "details_required": "Please fill in your basic details",
+      "aadhaar_mismatch": "The Aadhaar number does not match the uploaded Aadhaar card",
+      "invalid_dob": "Enter a valid date of birth",
+      "taluka_required": "Enter your taluka and district",
+      "statement_required": "Please upload your bank statement",
+      "mess_details_required": "Enter your mess name and monthly bill",
+      "abhyasika_details_required": "Enter your abhyasika name and monthly fee",
+      "invalid_amount": "Enter a valid amount in rupees"
+    },
+    "upload": {
+      "too_large": "File is too large. Maximum size is {{max_mb}} MB.",
+      "invalid_type": "Only JPG, PNG or PDF files are allowed"
+    },
+    "admin": {
+      "rejection_reason_required": "Choose at least one reason or write a note for the student",
+      "profile_incomplete": "The student has not completed all sections yet"
+    },
+    "donor": {
+      "invalid_pan": "Enter a valid PAN. The 4th letter must be P, B, C, H or T.",
+      "pan_exists": "This PAN is already registered with another account",
+      "invalid_pan_name": "Enter the name exactly as printed on the PAN card"
+    },
+    "payments": {
+      "invalid_period": "Choose a valid month that is not in the future",
+      "not_accepted": "This student is not accepted (eligible and verified)",
+      "nothing_due": "Nothing is due for this student",
+      "already_paid": "This student has already been paid for this month",
+      "insufficient_funds": "Not enough money left: ₹{{balance}} available, ₹{{amount}} needed"
+    },
+    "donation": {
+      "invalid_upi": "Enter a valid UPI ID, e.g. name@bank",
+      "bank_required": "Choose your bank",
+      "invalid_card": "Choose the card type and enter the last 4 digits of the card",
+      "profile_incomplete": "Please add your bank and PAN details before donating"
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong. Please try again.",
+    "select": "Select",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
+  "upload": {
+    "choose": "Choose a file",
+    "hint": "JPG, PNG or PDF, up to {{max}} MB"
+  },
+  "onboarding": {
+    "title": "Complete your registration",
+    "subtitle": "Three short sections. You can come back and finish later.",
+    "privacy": "Your Aadhaar and bank details are stored encrypted and are only used to verify your identity and send scholarship payments.",
+    "fileUploaded": "✓ File already uploaded — choose a new file only to replace it",
+    "saving": "Saving…",
+    "saveAndContinue": "Save and continue",
+    "finish": "Save and finish",
+    "saved": "Saved",
+    "continueToExpenses": "Continue to section 3: Mess & abhyasika",
+    "saveBothFirst": "Save your Aadhaar card and bank details to continue"
+  },
+  "studentProfile": {
+    "title": "My profile",
+    "status": {
+      "pending": "Verification pending",
+      "verified": "Verified",
+      "rejected": "Needs correction"
+    },
+    "update": "Update details",
+    "viewAadhaar": "View Aadhaar card",
+    "viewStatement": "View bank statement",
+    "viewMessReceipt": "View mess receipt",
+    "viewAbhyasikaReceipt": "View abhyasika receipt",
+    "notSubmitted": "Not submitted yet"
+  },
+  "signup": {
+    "sectionN": "Section {{n}}",
+    "step": {
+      "personal": "Basic details",
+      "documents": "Aadhaar & bank",
+      "expenses": "Mess & abhyasika",
+      "account": "Account details",
+      "bankPan": "Bank & PAN"
+    },
+    "createAndContinue": "Create account and continue"
+  },
+  "details": {
+    "desc": "Your name, contact and education details.",
+    "gender": "Gender",
+    "genders": {
+      "female": "Female",
+      "male": "Male",
+      "other": "Other"
+    },
+    "guardianName": "Parent / guardian name",
+    "guardianPhone": "Parent / guardian mobile (optional)",
+    "college": "College / institute",
+    "course": "Course",
+    "coursePlaceholder": "e.g. B.Sc., B.A., Diploma",
+    "year": "Year of study",
+    "yearN": "Year {{n}}",
+    "phoneLocked": "Your login number cannot be changed here"
+  },
+  "aadhaar": {
+    "title": "Aadhaar card",
+    "desc": "Upload your Aadhaar card. Your date of birth and taluka are read from it automatically — please check them.",
+    "file": "Aadhaar card (photo or PDF)",
+    "fileTip": "Tip: make sure the QR code on the card is clear and fully visible. The downloaded e-Aadhaar PDF works best.",
+    "reading": "Reading your Aadhaar card…",
+    "pdfLocked": "This PDF is password-protected. Enter its password (usually the first 4 letters of your name in CAPITALS followed by your birth year, e.g. ASHA2005).",
+    "pdfPassword": "PDF password",
+    "unlock": "Open",
+    "wrongPassword": "That password did not open the PDF. Please try again.",
+    "number": "Aadhaar number",
+    "numberHint": "12 digits, as printed on your card",
+    "reenterNumber": "Saved: {{value}}. Re-enter the full number to save changes.",
+    "dob": "Date of birth",
+    "ageYears": "Age: {{age}} years",
+    "taluka": "Taluka",
+    "district": "District",
+    "state": "State",
+    "pincode": "PIN code",
+    "address": "Address",
+    "invalidPincode": "PIN code must be 6 digits",
+    "confirmSave": "Confirm and save",
+    "uploadDifferent": "Upload a different file",
+    "editDetails": "Edit details",
+    "replaceCard": "Replace card",
+    "readBy": "Read by",
+    "editedFields": "Changed by student",
+    "method": {
+      "qr_secure": "✓ Details read from the QR code on your card. Please check them.",
+      "qr_xml": "✓ Details read from the QR code on your card. Please check them.",
+      "ai": "Details read automatically from the card image. Please check every field carefully.",
+      "none": "We could not read the card automatically. Please fill in the details."
+    },
+    "methodShort": {
+      "qr_secure": "QR code",
+      "qr_xml": "QR code",
+      "ai": "AI (image)",
+      "none": "Entered manually"
+    },
+    "warning": {
+      "name_mismatch": "The name on the card does not match your registered name. Make sure you uploaded your own Aadhaar card.",
+      "taluka_inferred": "The taluka is not printed on the card and was filled in from the address — please check it.",
+      "not_aadhaar": "This does not look like an Aadhaar card.",
+      "ai_unavailable": "Tip: a clearer photo of the QR code lets us fill these in for you.",
+      "ai_failed": "Automatic reading is not available right now.",
+      "not_read": "The card could not be read."
+    },
+    "fieldNames": {
+      "dob": "date of birth",
+      "taluka": "taluka",
+      "district": "district",
+      "pincode": "PIN code",
+      "gender": "gender"
+    }
+  },
+  "bank": {
+    "title": "Bank details",
+    "desc": "Scholarship amounts will be paid into this account. It should be in your own name.",
+    "holder": "Account holder name",
+    "account": "Account number",
+    "confirmAccount": "Re-enter account number",
+    "accountMismatch": "Account numbers do not match",
+    "savedAs": "Saved: {{value}}. Re-enter the full number to save changes.",
+    "ifsc": "IFSC code",
+    "ifscHint": "11 characters, printed on your passbook or cheque book",
+    "bankName": "Bank name",
+    "branch": "Branch",
+    "statement": "Bank statement (PDF or photo)",
+    "save": "Save bank details",
+    "donorDesc": "Your bank account details, used for donation records and any refunds.",
+    "donorProof": "Cancelled cheque or passbook (optional)"
+  },
+  "expenses": {
+    "messTitle": "Monthly mess bill",
+    "messDesc": "Where you take your meals and how much you pay each month.",
+    "usesMess": "I take meals at a mess",
+    "messName": "Mess name",
+    "address": "Address",
+    "monthlyBill": "Monthly bill",
+    "messReceipt": "Mess bill / receipt (optional)",
+    "abhyasikaTitle": "Abhyasika (study place)",
+    "abhyasikaDesc": "The study room / library where you study and its monthly fee.",
+    "usesAbhyasika": "I study at an abhyasika",
+    "abhyasikaName": "Abhyasika name",
+    "monthlyFee": "Monthly fee",
+    "abhyasikaReceipt": "Fee receipt (optional)",
+    "total": "Total per month",
+    "notUsing": "Not using"
+  },
+  "directory": {
+    "title": "Student directory",
+    "count_one": "{{formatted}} student",
+    "count_other": "{{formatted}} students",
+    "export": {
+      "xlsx": "Export Excel",
+      "csv": "Export CSV"
+    },
+    "exporting": "Preparing…",
+    "exportNote": "Exports include the filters below. Aadhaar numbers are masked; bank account numbers are shown in full — handle the file carefully.",
+    "search": "Search",
+    "searchPlaceholder": "Name, mobile, email, college",
+    "profile": "Registration",
+    "complete": "Complete",
+    "incomplete": "Incomplete",
+    "clearFilters": "Clear filters",
+    "col": {
+      "name": "Name",
+      "mobile": "Mobile",
+      "age": "Age",
+      "taluka": "Taluka",
+      "college": "College",
+      "mess": "Mess / month",
+      "abhyasika": "Abhyasika / month",
+      "total": "Total",
+      "profile": "Registration",
+      "eligibility": "Eligibility",
+      "verification": "Verification"
+    },
+    "empty": "No students found",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {{page}} of {{pages}}"
+  },
+  "eligibility": {
+    "label": "Eligibility",
+    "status": {
+      "eligible": "Eligible",
+      "not_eligible": "Not eligible",
+      "pending": "Not checked yet"
+    },
+    "student": {
+      "eligible": {
+        "title": "Congratulations! You are eligible for Vidyarthi Yojna",
+        "body": "Based on the details you submitted, you meet the eligibility criteria for this scheme. Your documents will now be verified."
+      },
+      "not_eligible": {
+        "title": "You are not eligible for this scheme",
+        "body": "Based on the details you submitted, you do not meet the eligibility criteria for this scheme. If you think your details are wrong, please update them or contact us."
+      },
+      "pending": {
+        "title": "Eligibility not checked yet",
+        "body": "Your eligibility will be checked once you submit your Aadhaar details."
+      }
+    },
+    "reasons": {
+      "age_below": "Age {{age}} is below {{min}}",
+      "age_above": "Age {{age}} is above {{max}}",
+      "taluka_not_listed": "Taluka {{taluka}} ({{district}}) is not in the eligible list",
+      "district_mismatch": "Taluka {{taluka}} is listed, but not for district {{district}}",
+      "missing_aadhaar": "Aadhaar details not submitted"
+    },
+    "admin": {
+      "title": "Scheme eligibility",
+      "overviewTitle": "Scheme eligibility",
+      "ruleSummary": "Eligible if and only if age is {{min}}–{{max}} years and the student lives in one of {{count}} listed talukas.",
+      "ageCheck": "Age {{age}} (must be {{min}}–{{max}})",
+      "talukaCheck": "Taluka {{taluka}}, {{district}} — not in the eligible list",
+      "talukaListed": "Taluka {{taluka}}, {{district}} — in the eligible list",
+      "checkedOn": "Checked on {{date}}",
+      "showTalukas": "Show eligible talukas",
+      "hideTalukas": "Hide eligible talukas"
+    }
+  },
+  "verification": {
+    "label": "Verification",
+    "status": {
+      "pending": "Pending review",
+      "verified": "Verified",
+      "rejected": "Needs correction"
+    },
+    "reasons": {
+      "aadhaar_unclear": "Aadhaar card image is unclear or incomplete",
+      "aadhaar_mismatch": "Details entered do not match your Aadhaar card",
+      "bank_statement_unclear": "Bank statement is unclear or incomplete",
+      "bank_details_mismatch": "Bank details do not match the bank statement",
+      "mess_details": "Mess details are incorrect or incomplete",
+      "abhyasika_details": "Abhyasika details are incorrect or incomplete",
+      "personal_details": "Basic details are incorrect or incomplete",
+      "other": "Other — see the note"
+    },
+    "student": {
+      "pending": {
+        "title": "Your documents are under review",
+        "body": "Our team is checking your Aadhaar card, bank statement and other details. You will see the result here."
+      },
+      "resubmitted": {
+        "title": "Thank you for updating your details",
+        "body": "Your updated details will be reviewed again. You will see the result here."
+      },
+      "verified": {
+        "title": "Your documents are verified",
+        "body": "Your Aadhaar card, bank details and other information have been verified successfully."
+      },
+      "rejected": {
+        "title": "Your application needs correction",
+        "body": "Please correct the following and submit again:"
+      },
+      "noteFromOffice": "Note from the office",
+      "fixNow": "Correct my details",
+      "decidedOn": "Updated on {{date}}"
+    },
+    "admin": {
+      "title": "Document verification",
+      "verify": "Verify",
+      "requestCorrection": "Needs correction",
+      "resetPending": "Reset to pending",
+      "chooseReasons": "What should the student correct?",
+      "note": "Note to the student (optional)",
+      "notePlaceholder": "e.g. The first page of the bank statement is cut off.",
+      "sendToStudent": "Send to student",
+      "history": "History",
+      "resubmitted": "Updated by student"
+    }
+  },
+  "requirements": {
+    "title": "Requirements of accepted students",
+    "subtitle": "Students who are eligible for the scheme and verified — their monthly mess bill and abhyasika fee.",
+    "totalMonthly": "Total requirement / month",
+    "averagePerStudent": "Average {{amount}} per student",
+    "acceptedStudents": "Accepted students",
+    "messTotal": "Mess bills / month",
+    "abhyasikaTotal": "Abhyasika fees / month",
+    "usingCount_one": "{{formatted}} student",
+    "usingCount_other": "{{formatted}} students",
+    "studentsCount_one": "{{formatted}} student",
+    "studentsCount_other": "{{formatted}} students",
+    "totalRow_one": "Total ({{formatted}} student)",
+    "totalRow_other": "Total ({{formatted}} students)",
+    "byDistrict": "By district",
+    "empty": "No accepted students yet. Students appear here once they are eligible and verified.",
+    "col": {
+      "mess": "Mess / month",
+      "abhyasika": "Abhyasika / month",
+      "total": "Total / month",
+      "bank": "Bank (for payment)"
+    }
+  },
+  "pan": {
+    "title": "PAN card",
+    "desc": "Your PAN is needed for donation receipts and tax records.",
+    "number": "PAN",
+    "numberHint": "10 characters, e.g. ABCPE1234F",
+    "savedAs": "Saved: {{value}}. Re-enter the full PAN to save changes.",
+    "name": "Name as on PAN card",
+    "nameHint": "Exactly as printed on the card",
+    "file": "PAN card copy (optional)",
+    "save": "Save PAN details",
+    "holderType": "PAN type",
+    "types": {
+      "P": "Individual",
+      "B": "Body of individuals",
+      "C": "Company",
+      "H": "Hindu Undivided Family (HUF)",
+      "T": "Trust"
+    },
+    "invalidFormat": "Enter a valid 10-character PAN (5 letters, 4 digits, 1 letter)",
+    "invalidType": "The 4th letter of the PAN must be P (individual), B (body of individuals), C (company), H (HUF) or T (trust)"
+  },
+  "donorOnboarding": {
+    "title": "Complete your donor registration",
+    "subtitle": "Add your bank account and PAN card details to continue.",
+    "privacy": "Your account number and PAN are stored encrypted and are only visible to the Vidyarthi Yojna administrators."
+  },
+  "donorProfile": {
+    "title": "My details",
+    "viewBankProof": "View cheque / passbook",
+    "viewPan": "View PAN card"
+  },
+  "donorsList": {
+    "title": "Donors",
+    "count_one": "{{formatted}} donor",
+    "count_other": "{{formatted}} donors",
+    "searchPlaceholder": "Name, mobile, email",
+    "details": "Bank & PAN",
+    "contact": "Contact",
+    "empty": "No donors found"
+  },
+  "payments": {
+    "title": "Payments",
+    "subtitle": "Money left in the fund, what is due this month, and the accepted students still to be paid.",
+    "month": "Month",
+    "moneyLeft": "Money left",
+    "receivedPaid": "{{received}} received · {{paid}} paid out",
+    "addFunds": "Add funds",
+    "toPay": "To pay for {{month}}",
+    "paidIn": "Paid for {{month}}",
+    "studentsCount_one": "{{formatted}} student",
+    "studentsCount_other": "{{formatted}} students",
+    "shortfall": "{{amount}} short — add funds to pay everyone",
+    "studentsToPay": "Students to pay — {{month}}",
+    "searchPlaceholder": "Search name or mobile",
+    "col": {
+      "name": "Student",
+      "amount": "Amount to pay"
+    },
+    "breakdown": "Mess {{mess}} + Abhyasika {{abhyasika}}",
+    "pay": "Pay",
+    "notEnoughShort": "Not enough money left — add funds first",
+    "allPaid": "Everyone has been paid for {{month}}.",
+    "paidList": "Paid for {{month}}",
+    "nonePaid": "No payments made for this month yet.",
+    "ref": "Ref",
+    "fundsReceived": "Funds received",
+    "noFunds": "No funds recorded yet. Use “Add funds” when money is received.",
+    "unnamedSource": "Funds received",
+    "payTitle": "Pay {{name}}",
+    "amountFor": "Amount for {{month}}",
+    "transferTo": "Transfer to this account:",
+    "copy": "Copy",
+    "copied": "Copied",
+    "reference": "Transaction reference (optional)",
+    "referenceHint": "UTR / transaction ID from your bank, for your records",
+    "markPaid": "Mark {{amount}} as paid",
+    "markPaidNote": "Make the bank transfer first, then mark it as paid here.",
+    "paidNotice": "{{name}} marked as paid {{amount}} for {{month}}.",
+    "fundsNotice": "{{amount}} added to the fund.",
+    "fundAmount": "Amount received",
+    "fundSource": "Received from (optional)",
+    "fundSourcePlaceholder": "e.g. donor or organisation name",
+    "fundNote": "Note (optional)"
+  },
+  "home2": {
+    "kicker": "Vidyarthi Yojna",
+    "title": "Helping students eat well and study well",
+    "about": "Many students from rural Vidarbha, Marathwada and Palghar move to cities to study. Vidyarthi Yojna helps eligible students aged 18–24 pay their monthly mess bill and abhyasika (study room) fee, so money never stands between them and their education.",
+    "point1": "Every student is verified with Aadhaar and bank documents",
+    "point2": "Money is paid directly into the student's bank account every month",
+    "point3": "Every rupee donated is recorded with a receipt",
+    "appealTitle": "Your help makes a difference",
+    "appealBody": "{{students}} students currently need {{amount}} every month for meals and a place to study. Any amount helps — donate today.",
+    "appealBodyGeneric": "Students need help every month for meals and a place to study. Any amount helps — donate today.",
+    "donateNow": "Donate now",
+    "cards": {
+      "students": "Students supported",
+      "studentsHint_one": "{{formatted}} student registered",
+      "studentsHint_other": "{{formatted}} students registered",
+      "monthlyNeed": "Needed every month",
+      "monthlyNeedHint": "Mess bills + abhyasika fees",
+      "mess": "Mess bills / month",
+      "abhyasika": "Abhyasika fees / month",
+      "forStudents_one": "for {{formatted}} student",
+      "forStudents_other": "for {{formatted}} students",
+      "raised": "Raised from donors",
+      "donationsCount_one": "{{formatted}} donation",
+      "donationsCount_other": "{{formatted}} donations",
+      "paidOut": "Paid to students",
+      "paidOutHint": "Transferred to students' bank accounts"
+    }
+  },
+  "donate": {
+    "title": "Donate",
+    "subtitle": "Choose an amount and how you paid. You will get a receipt immediately.",
+    "amount": "Amount",
+    "otherAmount": "Amount (₹)",
+    "method": "Payment method",
+    "methods": {
+      "upi": "UPI",
+      "netbanking": "Net banking",
+      "card": "Credit / debit card"
+    },
+    "payTo": "Pay to",
+    "payToUpi": "UPI ID",
+    "yourUpi": "Your UPI ID",
+    "yourBank": "Your bank",
+    "otherBank": "Other bank",
+    "cardType": "Card type",
+    "debit": "Debit card",
+    "credit": "Credit card",
+    "cardLast4": "Last 4 digits",
+    "cardNetwork": "Card network",
+    "cardSafety": "We never ask for your full card number, CVV or OTP.",
+    "reference": "Transaction reference (optional)",
+    "referenceHint": "UTR / UPI reference from your bank or UPI app",
+    "noPayee": "Payment account details will be shared by the Vidyarthi Yojna office.",
+    "submit": "Donate {{amount}}",
+    "recordNote": "Complete the payment in your bank / UPI app, then record it here to get your receipt.",
+    "thankYou": "Thank you for your donation!",
+    "recorded": "Your donation of {{amount}} has been recorded.",
+    "receiptNo": "Receipt no.",
+    "downloadReceipt": "Download receipt (PDF)",
+    "again": "Make another donation",
+    "backHome": "Back to home"
+  },
+  "myDonations": {
+    "title": "My donations",
+    "total": "Total donated: {{amount}}",
+    "receipt": "Receipt",
+    "empty": "You have not made a donation yet."
+  },
+  "adminDonations": {
+    "title": "Donations",
+    "subtitle": "Every donation with how it was paid, the transaction reference and the receipt.",
+    "totalReceived": "Total donations",
+    "searchPlaceholder": "Donor, mobile, receipt no., reference",
+    "col": {
+      "date": "Date / receipt",
+      "donor": "Donor",
+      "amount": "Amount",
+      "payment": "Payment details",
+      "reference": "Reference"
+    },
+    "empty": "No donations found",
+    "noneForDonor": "This donor has not donated yet."
+  }
+}

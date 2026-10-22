@@ -1,0 +1,23 @@
+# Requires Python 3.10+
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30
+pydantic[email]>=2.8,<3.0
+pydantic-settings>=2.4
+pymongo>=4.10,<5.0
+python-dotenv>=1.0
+python-multipart>=0.0.9
+bcrypt>=4.2
+PyJWT>=2.9
+cryptography>=42.0
+
+# Aadhaar reading: QR decoding, PDF rendering, Claude AI fallback
+zxing-cpp>=2.2
+pillow>=10.0
+pypdfium2>=4.30
+anthropic>=1.17
+
+# Student directory export
+openpyxl>=3.1
+
+# Donation receipts (PDF)
+fpdf2>=2.7
