@@ -31,6 +31,7 @@ async def lifespan(app: FastAPI):
             logger.info("Re-checked scheme eligibility for %d students", rechecked)
     except Exception as exc:
         logger.warning("Database setup skipped: %s", exc)
+    logger.info("CORS allowed origins: %s", settings.cors_origins_list)
     if settings.JWT_SECRET.startswith("change-me"):
         logger.warning("JWT_SECRET is using the default value. Set a strong secret in .env!")
     yield

@@ -51,7 +51,14 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins_list(self) -> List[str]:
-        return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
+        """Browsers send the origin without a trailing slash or path, so normalise
+        values pasted from the address bar ("https://site.vercel.app/ ")."""
+        origins = []
+        for origin in self.CORS_ORIGINS.split(","):
+            origin = origin.strip().strip("\"'").strip().rstrip("/")
+            if origin:
+                origins.append(origin)
+        return origins
 
 
 @lru_cache
