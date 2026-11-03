@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Vidyarthi Yojna",
+    "name": "Shidori",
     "tagline": "Schemes and scholarships for every student"
   },
   "nav": {
@@ -581,7 +581,7 @@
     },
     "student": {
       "eligible": {
-        "title": "Congratulations! You are eligible for Vidyarthi Yojna",
+        "title": "Congratulations! You are eligible for Shidori",
         "body": "Based on the details you submitted, you meet the eligibility criteria for this scheme. Your documents will now be verified."
       },
       "not_eligible": {
@@ -710,7 +710,7 @@
   "donorOnboarding": {
     "title": "Complete your donor registration",
     "subtitle": "Add your bank account and PAN card details to continue.",
-    "privacy": "Your account number and PAN are stored encrypted and are only visible to the Vidyarthi Yojna administrators."
+    "privacy": "Your account number and PAN are stored encrypted and are only visible to the Shidori administrators."
   },
   "donorProfile": {
     "title": "My details",
@@ -771,9 +771,9 @@
     "fundNote": "Note (optional)"
   },
   "home2": {
-    "kicker": "Vidyarthi Yojna",
+    "kicker": "Shidori",
     "title": "Helping students eat well and study well",
-    "about": "Many students from rural Vidarbha, Marathwada and Palghar move to cities to study. Vidyarthi Yojna helps eligible students aged 18–24 pay their monthly mess bill and abhyasika (study room) fee, so money never stands between them and their education.",
+    "about": "Many students from rural Vidarbha, Marathwada and Palghar move to cities to study. Shidori helps eligible students aged 18–24 pay their monthly mess bill and abhyasika (study room) fee, so money never stands between them and their education.",
     "point1": "Every student is verified with Aadhaar and bank documents",
     "point2": "Money is paid directly into the student's bank account every month",
     "point3": "Every rupee donated is recorded with a receipt",
@@ -822,7 +822,7 @@
     "cardSafety": "We never ask for your full card number, CVV or OTP.",
     "reference": "Transaction reference (optional)",
     "referenceHint": "UTR / UPI reference from your bank or UPI app",
-    "noPayee": "Payment account details will be shared by the Vidyarthi Yojna office.",
+    "noPayee": "Payment account details will be shared by the Shidori office.",
     "submit": "Donate {{amount}}",
     "recordNote": "Complete the payment in your bank / UPI app, then record it here to get your receipt.",
     "thankYou": "Thank you for your donation!",
