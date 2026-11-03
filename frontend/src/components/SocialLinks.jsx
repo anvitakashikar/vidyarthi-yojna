@@ -1,9 +1,7 @@
-/** Shidori is run by Angholichi Goli (Bath Pill), Pune — details from https://angholichigoli.org/ */
+/** Angholichi Goli (Bath Pill), Pune — the founders' first organisation; details from https://angholichigoli.org/ */
 export const ORG = {
   website: 'https://angholichigoli.org/',
   whatsappGroup: 'https://angholichigoli.org/contact-us/',
-  // SBI UPI collection account, from the scanner on the website
-  upi: { id: '37660631248@SBI', name: 'Angholichi Goli', qr: '/images/donate-qr.jpg' },
   emails: ['angholichigoli@gmail.com', 'angholichigolimumbai@gmail.com'],
   phones: [
     { name: 'Avinash Patil', number: '8080171430' },

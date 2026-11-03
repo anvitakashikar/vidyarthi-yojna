@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-import DonateQR from '../components/DonateQR'
+import DonateBank, { FOUNDATION } from '../components/DonateBank'
 import { ORG, SocialLinks } from '../components/SocialLinks'
 
 // Story sections in reading order; each pairs a heading and paragraphs with a photo
@@ -31,6 +32,12 @@ function TextCard({ id }) {
 
 export default function About() {
   const { t } = useTranslation()
+  const { hash } = useLocation()
+
+  // Links such as /about#donate jump straight to that section
+  useEffect(() => {
+    if (hash) document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+  }, [hash])
 
   return (
     <div className="space-y-10 sm:space-y-14">
@@ -88,7 +95,7 @@ export default function About() {
           <TextCard id="spirit" />
         </div>
         <div id="donate" className="scroll-mt-24">
-          <DonateQR className="md:sticky md:top-24 md:w-80" />
+          <DonateBank className="md:sticky md:top-24 md:w-96" />
         </div>
       </div>
 
@@ -117,17 +124,40 @@ export default function About() {
         </div>
       </section>
 
-      <section className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-2xl">
+      <section className="grid gap-8 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <div>
           <h2 className="text-xl font-bold text-brand-700">{t('about.org.title')}</h2>
           <p className="mt-2 leading-relaxed text-slate-700">{t('about.org.body')}</p>
-          <a href={ORG.website} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block font-medium text-brand-600 hover:underline">
+
+          <h3 className="mt-6 font-semibold text-slate-800">{t('about.founders.title')}</h3>
+          {t('about.founders.body', { returnObjects: true }).map((text) => (
+            <p key={text} className="mt-2 leading-relaxed text-slate-700">
+              {text}
+            </p>
+          ))}
+          <a href={ORG.website} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block font-medium text-brand-600 hover:underline">
             {t('about.org.website')} ↗
           </a>
-        </div>
-        <div>
-          <p className="mb-2 text-sm font-medium text-slate-500">{t('about.org.follow')}</p>
+          <p className="mb-2 mt-5 text-sm font-medium text-slate-500">{t('about.org.follow')}</p>
           <SocialLinks />
+        </div>
+
+        <div className="rounded-xl bg-slate-50 p-5">
+          <h3 className="font-semibold text-slate-800">{t('about.org.registration.title')}</h3>
+          <dl className="mt-3 divide-y divide-slate-200 text-sm">
+            {[
+              ['name', FOUNDATION.name],
+              ['form', t('about.org.registration.formValue')],
+              ['darpan', `${FOUNDATION.darpanId} · ${t('about.org.registration.darpanValue')}`],
+              ['tax', t('about.org.registration.taxValue')],
+            ].map(([key, value]) => (
+              <div key={key} className="py-2.5">
+                <dt className="text-slate-500">{t(`about.org.registration.${key}`)}</dt>
+                <dd className="mt-0.5 font-medium text-slate-800">{value}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-3 text-xs leading-relaxed text-slate-500">{t('about.org.registration.taxNote')}</p>
         </div>
       </section>
     </div>

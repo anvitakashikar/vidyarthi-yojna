@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-import DonateQR from '../components/DonateQR'
+import DonateBank from '../components/DonateBank'
 import { BrandIcon, ORG, SocialLinks, WHATSAPP_ICON } from '../components/SocialLinks'
 
 const inputClass =
@@ -64,7 +64,7 @@ export default function Contact() {
           </div>
         </div>
 
-        <DonateQR />
+        <DonateBank />
 
         <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-white p-6">
           <h2 className="text-lg font-semibold text-brand-700">{t('contact.formTitle')}</h2>

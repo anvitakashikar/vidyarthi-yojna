@@ -21,7 +21,7 @@
   },
   "home": {
     "title": "Welcome to Shidori",
-    "subtitle": "Find, apply for and track government and institutional schemes for students — all in one place.",
+    "subtitle": "Meal support for students from drought-hit farming families who are studying in Pune and Pimpri-Chinchwad — so that hunger never stands between them and their dreams.",
     "cta": "Register as a student",
     "slides": {
       "carousel": "carousel",
@@ -59,7 +59,61 @@
     "apiChecking": "Checking…",
     "apiOnline": "Server and database are running",
     "apiDbDown": "Server is running but the database is unavailable",
-    "apiOffline": "Server is not reachable"
+    "apiOffline": "Server is not reachable",
+    "donateCta": "Donate now",
+    "facts": [
+      {
+        "value": "₹3,000–3,500",
+        "label": "proposed meal support per student, every month"
+      },
+      {
+        "value": "Pune & PCMC",
+        "label": "where we begin — students preparing for MPSC, UPSC and other exams"
+      },
+      {
+        "value": "Mess or home-cooked",
+        "label": "support whether students eat at a mess or cook for themselves"
+      },
+      {
+        "value": "All of Maharashtra",
+        "label": "Vidarbha, Marathwada, Western Maharashtra, Khandesh and Konkan"
+      }
+    ],
+    "meaning": {
+      "title": "What is a shidori?",
+      "body": "A shidori is the bundle of food a mother packs for her child before a journey. It carries not just food, but her love and care. Shidori asks society to send that same care to students who have left home to study.",
+      "quote": "Whichever district a student comes from, they belong to our Maharashtra.",
+      "link": "Read our story"
+    },
+    "steps": {
+      "title": "How Shidori helps students",
+      "intro": "A simple, respectful process — your dignity and privacy are protected at every step.",
+      "stepLabel": "Step {{number}}",
+      "items": [
+        {
+          "title": "Register and share your details",
+          "body": "Sign up with your mobile number and fill in your personal, Aadhaar, bank and mess or study-place details."
+        },
+        {
+          "title": "We verify your application",
+          "body": "Our team checks your financial situation and documents. If anything needs correcting, you'll see it on your dashboard."
+        },
+        {
+          "title": "Receive monthly meal support",
+          "body": "Once approved, you receive help towards your meals every month, whether you eat at a mess or cook for yourself."
+        }
+      ]
+    },
+    "donate": {
+      "title": "Add a mouthful to their journey",
+      "body": "Help pay for one student's meals for a day or a month. Small and large contributions from entrepreneurs, professionals, organisations and citizens together can support many students.",
+      "trust": "Every donation is properly accounted for and used transparently."
+    },
+    "foundation": {
+      "title": "Run by Make Earth Happy Foundation",
+      "body": "Shidori is run by Make Earth Happy Foundation, a Section 8 not-for-profit company set up by the founders of Angholichi Goli (Bath Pill), Pune.",
+      "link": "About us and our founders"
+    }
   },
   "auth": {
     "login": "Login",
@@ -214,10 +268,21 @@
       "donor": "Donate now"
     },
     "org": {
-      "title": "An initiative of Angholichi Goli (Bath Pill)",
-      "body": "Shidori is an initiative of Angholichi Goli (Bath Pill), a Pune-based social organisation. Guided by transparency, accountability and inclusiveness, it works in social welfare, health, education and the environment.",
-      "website": "Visit the website",
-      "follow": "Follow us"
+      "title": "Run by Make Earth Happy Foundation",
+      "body": "Shidori is run by Make Earth Happy Foundation, a not-for-profit company registered under Section 8 of the Companies Act, 2013. Donations to Shidori go to the foundation's bank account.",
+      "website": "Visit Angholichi Goli",
+      "follow": "Follow us",
+      "registration": {
+        "title": "Registration details",
+        "name": "Registered name",
+        "form": "Legal form",
+        "formValue": "Section 8 company (Companies Act, 2013)",
+        "darpan": "NGO DARPAN ID",
+        "darpanValue": "Active, generated 02 October 2026",
+        "tax": "Income-tax registration",
+        "taxValue": "Provisional orders, valid for tax years 2026–27 to 2028–29",
+        "taxNote": "Donations may be eligible for income-tax benefits, subject to applicable rules."
+      }
     },
     "images": {
       "farmer": "A farmer standing in his field",
@@ -225,6 +290,14 @@
       "meals": "A Maharashtrian thali with pav, misal and vegetables",
       "logo": "The Shidori logo — a student studying, a farmer and a tiffin box",
       "student": "A student reading in a library"
+    },
+    "founders": {
+      "title": "About the founders",
+      "body": [
+        "Shidori's founders first started Angholichi Goli (Bath Pill) in Pune — a social organisation inspired by Mahatma Gandhi and Swami Vivekananda, and by the idea of Vasudhaiva Kutumbakam: the world is one family.",
+        "Through Angholichi Goli they have run public campaigns such as Nail-Free Tree, Give Plastic Take Away Plant and Climate Action, alongside associates including Pune Municipal Corporation, Pimpri-Chinchwad Municipal Corporation and Cummins.",
+        "With Make Earth Happy Foundation, they now bring the same spirit of service to students from drought-hit farming families."
+      ]
     }
   },
   "contact": {
@@ -247,7 +320,8 @@
     "back": "Go to home"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "runBy": "Run by Make Earth Happy Foundation"
   },
   "errors": {
     "network": "Cannot reach the server. Please check your connection.",
@@ -782,14 +856,45 @@
   "social": {
     "title": "Social media"
   },
-  "donateQr": {
-    "title": "Scan & donate",
-    "body": "Scan this QR code with any UPI app (GPay, PhonePe, Paytm, BHIM) to support Shidori directly.",
-    "merchant": "Payee",
-    "upiId": "UPI ID",
-    "payOnPhone": "Pay with a UPI app",
+  "donateBank": {
+    "title": "Donate by bank transfer",
+    "body": "Send your donation to Make Earth Happy Foundation's account by NEFT, RTGS or IMPS.",
+    "type": "Account type",
+    "typeValue": "Current account (institution)",
     "copy": "Copy",
-    "copied": "Copied",
-    "alt": "Angholichi Goli — SBI UPI payment QR code"
+    "copied": "Copied"
+  },
+  "appStatus": {
+    "title": "Application status",
+    "progress": "{{done}} of {{total}} steps complete",
+    "overall": {
+      "review": "Under review",
+      "action": "Action needed",
+      "approved": "Approved",
+      "not_eligible": "Not eligible"
+    },
+    "steps": {
+      "submitted": {
+        "label": "Application submitted",
+        "done": "Done"
+      },
+      "verification": {
+        "label": "Document verification",
+        "pending": "In progress",
+        "verified": "Verified",
+        "rejected": "Correction needed"
+      },
+      "eligibility": {
+        "label": "Eligibility check",
+        "pending": "Pending",
+        "eligible": "Eligible",
+        "not_eligible": "Not eligible"
+      },
+      "support": {
+        "label": "Meal support",
+        "approved": "Approved",
+        "waiting": "After the checks above"
+      }
+    }
   }
 }

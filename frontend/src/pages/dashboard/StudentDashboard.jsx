@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import DashboardHeader, { PlaceholderCards } from '../../components/dashboard/DashboardHeader'
+import ApplicationStatusBar from '../../components/student/ApplicationStatusBar'
 import EligibilityBanner from '../../components/student/EligibilityBanner'
 import StudentProfileDetails from '../../components/student/StudentProfileDetails'
 import VerificationBanner from '../../components/student/VerificationBanner'
@@ -22,6 +23,7 @@ export default function StudentDashboard() {
 
   return (
     <div className="space-y-8">
+      {profile && <ApplicationStatusBar verification={profile.verification_status} eligibility={profile.eligibility_status} />}
       <DashboardHeader />
       <Alert>{error}</Alert>
       {profile && <EligibilityBanner status={profile.eligibility_status} />}

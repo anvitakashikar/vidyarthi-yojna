@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-6 text-sm text-slate-600 sm:flex-row">
         <img src="/brand/logo-sm.png" alt={t('app.name')} width="219" height="144" className="h-14 w-auto" />
         <p>
-          © {new Date().getFullYear()} {t('app.name')}. {t('footer.rights')}
+          © {new Date().getFullYear()} {t('app.name')} · {t('footer.runBy')}. {t('footer.rights')}
         </p>
         <SocialLinks />
 
