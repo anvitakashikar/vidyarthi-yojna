@@ -60,7 +60,8 @@ export default function AdminDashboard() {
     }
   }
 
-  const dateFmt = new Intl.DateTimeFormat(i18n.language?.startsWith('mr') ? 'mr-IN' : 'en-IN', { dateStyle: 'medium' })
+  const language = i18n.resolvedLanguage?.split('-')[0]
+  const dateFmt = new Intl.DateTimeFormat(language === 'mr' || language === 'hi' ? `${language}-IN` : 'en-IN', { dateStyle: 'medium' })
 
   return (
     <div className="space-y-8">

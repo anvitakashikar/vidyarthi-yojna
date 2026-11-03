@@ -17,7 +17,7 @@ def _check_contact(role: str, phone: Optional[str], email: Optional[str]) -> Non
 
 
 class RegisterRequest(BaseModel):
-    """Self-registration is only open to students and donors.
+    """Self-registration is only open to students.
 
     Students also send `student_details` (section 1 of their sign-up).
     """
@@ -26,8 +26,8 @@ class RegisterRequest(BaseModel):
     phone: Phone = None
     email: OptionalEmail = None
     password: Password
-    role: Literal["student", "donor"]
-    preferred_language: Literal["en", "mr"] = "en"  # UI language the user picked
+    role: Literal["student"] = "student"
+    preferred_language: Literal["en", "mr", "hi"] = "mr"  # UI language the user picked
     student_details: Optional[StudentPersonalDetails] = None
 
     @model_validator(mode="after")
@@ -56,7 +56,6 @@ class AdminCreateUserRequest(BaseModel):
 class LoginRequest(BaseModel):
     identifier: str = Field(min_length=1, max_length=254, description="Mobile number or email")
     password: str = Field(min_length=1, max_length=64)
-    role: Role  # the portal the user is logging in from
 
 
 class UserPublic(BaseModel):
@@ -65,7 +64,7 @@ class UserPublic(BaseModel):
     email: Optional[str] = None
     phone: Optional[str] = None
     role: Role
-    preferred_language: str = "en"
+    preferred_language: str = "mr"
     is_active: bool = True
     onboarding_complete: bool = False
     created_at: Optional[datetime] = None
@@ -78,7 +77,7 @@ class UserPublic(BaseModel):
             email=doc.get("email"),
             phone=doc.get("phone"),
             role=doc["role"],
-            preferred_language=doc.get("preferred_language", "en"),
+            preferred_language=doc.get("preferred_language", "mr"),
             is_active=doc.get("is_active", True),
             onboarding_complete=doc.get("onboarding_complete", False),
             created_at=doc.get("created_at"),

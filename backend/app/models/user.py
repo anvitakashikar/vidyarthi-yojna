@@ -22,6 +22,6 @@ class User(MongoBaseModel):
     phone: Optional[str] = None     # 10-digit Indian mobile
     password_hash: str
     role: Role
-    preferred_language: str = "en"  # "en" | "mr"
+    preferred_language: str = "mr"  # "mr" | "en" | "hi"
     is_active: bool = True
     onboarding_complete: bool = False  # students: Aadhaar + bank details submitted

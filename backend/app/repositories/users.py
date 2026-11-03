@@ -47,7 +47,7 @@ class UserRepository(BaseRepository):
         role: Role,
         email: Optional[str] = None,
         phone: Optional[str] = None,
-        preferred_language: str = "en",
+        preferred_language: str = "mr",
     ) -> Dict[str, Any]:
         role = Role(role)
         return await self.create(

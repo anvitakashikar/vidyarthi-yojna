@@ -1,7 +1,6 @@
 """Creates ready-to-use demo accounts in the configured database.
 
     Demo student  9000000001 / Student@2026  — all 3 sections done, eligible, verified
-    Demo donor    9000000002 / Donor@2026    — bank + PAN done, 2 donations with receipts
     Admin         9000000003 / ADMIN_PASSWORD from .env (phone added if missing)
 
 Everything goes through the real API, so the data is exactly what the app would
@@ -22,7 +21,6 @@ from app.core.validators import _D, _P
 from app.main import app
 
 STUDENT = {"name": "Demo Student", "phone": "9000000001", "password": "Student@2026"}
-DONOR = {"name": "Demo Donor", "phone": "9000000002", "email": "demo.donor@vidyarthiyojna.in", "password": "Donor@2026"}
 ADMIN_PHONE = "9000000003"
 API = "/api/v1"
 
@@ -65,7 +63,7 @@ def account(c, payload, role):
     """Registers the account, or logs in if it already exists."""
     r = c.post(f"{API}/auth/register", json={**payload, "role": role})
     if r.status_code == 409:
-        r = c.post(f"{API}/auth/login", json={"identifier": payload["phone"], "password": payload["password"], "role": role})
+        r = c.post(f"{API}/auth/login", json={"identifier": payload["phone"], "password": payload["password"]})
         if r.status_code != 200:
             sys.exit(f"{role} {payload['phone']} already exists with a different password — delete it or change the demo password.")
         print(f"  {role}: existing account, refreshing its details")
@@ -83,7 +81,7 @@ def main():
         db = MongoClient(settings.MONGODB_URI)[settings.MONGODB_DB_NAME]
         if not db.users.find_one({"phone": ADMIN_PHONE}):
             db.users.update_one({"role": "admin", "email": settings.ADMIN_EMAIL.lower()}, {"$set": {"phone": ADMIN_PHONE}})
-        r = c.post(f"{API}/auth/login", json={"identifier": settings.ADMIN_EMAIL, "password": settings.ADMIN_PASSWORD, "role": "admin"})
+        r = c.post(f"{API}/auth/login", json={"identifier": settings.ADMIN_EMAIL, "password": settings.ADMIN_PASSWORD})
         admin = {"Authorization": f"Bearer {ok(r, 'log in as admin')['access_token']}"}
 
         # --- student: 3 sections, then verified by the admin
@@ -109,21 +107,9 @@ def main():
         profile = ok(c.get(f"{API}/students/me/profile", headers=student), "read student profile")
         print(f"  student: eligibility={profile['eligibility_status']}, verification={profile['verification_status']}")
 
-        # --- donor: bank + PAN, and two donations (only the first time)
-        donor, _ = account(c, DONOR, "donor")
-        ok(c.put(f"{API}/donors/me/bank", headers=donor, data={
-            "account_holder_name": DONOR["name"], "account_number": "001234567890123", "ifsc": "HDFC0000123", "bank_name": "HDFC Bank", "branch_name": "Nagpur"}), "save donor bank")
-        ok(c.put(f"{API}/donors/me/pan", headers=donor, data={"pan_number": "DEMPD1234X", "name_on_pan": DONOR["name"]},
-                 files={"pan_file": ("demo-pan.png", demo_card_png("PAN CARD"), "image/png")}), "save donor PAN")
-        if not ok(c.get(f"{API}/donations/me", headers=donor), "list donations")["items"]:
-            ok(c.post(f"{API}/donations", headers=donor, json={"amount": 5000, "method": "upi", "upi_id": "demo.donor@okhdfcbank", "reference": "DEMO-UPI-0001"}), "donate via UPI")
-            ok(c.post(f"{API}/donations", headers=donor, json={"amount": 2500, "method": "netbanking", "bank_name": "HDFC Bank", "reference": "DEMO-UTR-0002"}), "donate via net banking")
-            print("  donor: 2 demo donations recorded")
-
-    print("\nDemo logins (http://localhost:5173):")
-    print(f"  Student  /login/student  {STUDENT['phone']}  {STUDENT['password']}")
-    print(f"  Donor    /login/donor    {DONOR['phone']}  {DONOR['password']}")
-    print(f"  Admin    /login/admin    {ADMIN_PHONE}  (ADMIN_PASSWORD from .env)")
+    print("\nDemo logins (http://localhost:5173/login):")
+    print(f"  Student  {STUDENT['phone']}  {STUDENT['password']}")
+    print(f"  Admin    {ADMIN_PHONE}  (ADMIN_PASSWORD from .env)")
 
 
 if __name__ == "__main__":

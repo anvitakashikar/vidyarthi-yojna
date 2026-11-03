@@ -15,7 +15,7 @@ ERRORS: Dict[str, Tuple[int, str]] = {
     "auth.invalid_credentials": (401, "Incorrect mobile number / email or password"),
     "auth.email_exists": (409, "An account with this email already exists"),
     "auth.phone_exists": (409, "An account with this mobile number already exists"),
-    "auth.wrong_portal": (403, "This account is registered as {role}. Please use the {role} login."),
+    "auth.login_closed": (403, "Login is not available for this account. Please contact the administrator."),
     "auth.inactive": (403, "This account has been deactivated. Please contact the administrator."),
     "auth.not_authenticated": (401, "Please log in to continue"),
     "auth.invalid_token": (401, "Your session has expired. Please log in again."),

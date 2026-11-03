@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
+import DonateQR from '../../components/DonateQR'
+import { ORG } from '../../components/SocialLinks'
 import FormField, { Alert, inputClass } from '../../components/ui/FormField'
 import { downloadReceipt, getDonationPayee, recordDonation } from '../../services/api'
 import { apiErrorMessage } from '../../utils/apiError'
@@ -158,7 +160,8 @@ export default function Donate() {
           <div className="mt-4 space-y-4">
             {method === 'upi' && (
               <>
-                {payee?.upi_id && <PayeeBox rows={[[t('donate.payToUpi'), payee.upi_id]]} />}
+                <DonateQR compact />
+                {payee?.upi_id && payee.upi_id !== ORG.upi.id && <PayeeBox rows={[[t('donate.payToUpi'), payee.upi_id]]} />}
                 <FormField label={t('donate.yourUpi')} name="upi_id" placeholder="name@okhdfcbank" value={form.upi_id} onChange={onChange} required />
               </>
             )}

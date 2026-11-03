@@ -4,8 +4,8 @@ import { getMe, getStoredToken, loginRequest, registerRequest, setStoredToken } 
 
 const AuthContext = createContext(null)
 
+// All account roles (admins can still create and filter donor records)
 export const ROLES = ['student', 'donor', 'admin']
-export const SELF_REGISTER_ROLES = ['student', 'donor']
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -36,11 +36,8 @@ export function AuthProvider({ children }) {
     return u
   }
 
-  // identifier = mobile number or email
-  const login = useCallback(
-    (identifier, password, role) => loginRequest({ identifier, password, role }).then(handleAuth),
-    [],
-  )
+  // identifier = mobile number or email; the account's own role decides where it lands
+  const login = useCallback((identifier, password) => loginRequest({ identifier, password }).then(handleAuth), [])
   const register = useCallback((payload) => registerRequest(payload).then(handleAuth), [])
 
   // Re-fetch the user, e.g. after onboarding changes `onboarding_complete`

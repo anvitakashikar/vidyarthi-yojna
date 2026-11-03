@@ -7,6 +7,7 @@ from app.api.deps import get_current_user
 from app.core.errors import AppError
 from app.core.security import create_access_token, verify_password
 from app.db.mongodb import get_database
+from app.models.user import Role
 from app.repositories.students import StudentRepository
 from app.repositories.users import UserRepository, duplicate_key_code
 from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse, UserPublic
@@ -23,10 +24,7 @@ def _token_response(user: Dict[str, Any]) -> TokenResponse:
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 async def register(body: RegisterRequest):
-    """Student / donor self-registration. Logs the user in straight away.
-
-    Students register with a mobile number (email optional); donors with an email.
-    """
+    """Student self-registration (mobile number, email optional). Logs the user in straight away."""
     repo = UserRepository(get_database())
     conflict = await repo.find_conflict(body.email, body.phone)
     if conflict:
@@ -49,14 +47,17 @@ async def register(body: RegisterRequest):
 
 @router.post("/login", response_model=TokenResponse)
 async def login(body: LoginRequest):
-    """Log in with a mobile number or email, from a specific role's portal."""
+    """One login for students and admins, with a mobile number or email.
+
+    The account's own role decides which dashboard it lands on. Donor login is closed.
+    """
     user = await UserRepository(get_database()).get_by_identifier(body.identifier)
     if not user or not verify_password(body.password, user["password_hash"]):
         raise AppError("auth.invalid_credentials")
     if not user.get("is_active", True):
         raise AppError("auth.inactive")
-    if user["role"] != body.role.value:
-        raise AppError("auth.wrong_portal", {"role": user["role"]})
+    if user["role"] == Role.DONOR.value:
+        raise AppError("auth.login_closed")
     return _token_response(user)
 
 

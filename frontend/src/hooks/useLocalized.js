@@ -9,11 +9,11 @@ import { useTranslation } from 'react-i18next'
  */
 export default function useLocalized() {
   const { i18n } = useTranslation()
-  const lang = i18n.language?.startsWith('mr') ? 'mr' : 'en'
+  const lang = i18n.resolvedLanguage?.split('-')[0] || 'mr'
 
   return (value) => {
     if (value == null) return ''
     if (typeof value === 'string') return value
-    return value[lang] ?? value.en ?? ''
+    return value[lang] ?? value.en ?? value.mr ?? ''
   }
 }

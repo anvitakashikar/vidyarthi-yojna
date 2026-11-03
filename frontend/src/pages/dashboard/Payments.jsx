@@ -43,7 +43,8 @@ export default function Payments() {
 
   useEffect(load, [load])
 
-  const monthLabel = new Intl.DateTimeFormat(lang?.startsWith('mr') ? 'mr-IN' : 'en-IN', { month: 'long', year: 'numeric' }).format(
+  const monthLocale = ['mr', 'hi'].includes(lang?.split('-')[0]) ? `${lang.split('-')[0]}-IN` : 'en-IN'
+  const monthLabel = new Intl.DateTimeFormat(monthLocale, { month: 'long', year: 'numeric' }).format(
     new Date(`${period}-01T00:00:00`),
   )
   const q = search.trim().toLowerCase()

@@ -20,9 +20,19 @@
     "admin": "Admin"
   },
   "home": {
-    "title": "Welcome to Vidyarthi Yojna",
+    "title": "Welcome to Shidori",
     "subtitle": "Find, apply for and track government and institutional schemes for students — all in one place.",
     "cta": "Register as a student",
+    "slides": {
+      "carousel": "carousel",
+      "label": "Featured images",
+      "landscapeAlt": "Dry, cracked land with a few leafless trees",
+      "logoAlt": "Shidori logo",
+      "previous": "Previous image",
+      "next": "Next image",
+      "choose": "Choose an image",
+      "goTo": "Show image {{number}}"
+    },
     "portalsTitle": "Choose your portal",
     "portal": {
       "student": {
@@ -85,7 +95,9 @@
     "phoneHint": "You will use this number to log in",
     "emailOptional": "Email (optional)",
     "invalidPhone": "Enter a valid 10-digit mobile number",
-    "emailRequired": "Email is required"
+    "emailRequired": "Email is required",
+    "loginHeading": "Log in",
+    "loginSubtitleShared": "Students log in with their mobile number; the administrator with their email."
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}",
@@ -131,16 +143,103 @@
     }
   },
   "about": {
-    "title": "About Vidyarthi Yojna",
-    "body": "Vidyarthi Yojna is a platform that helps students access education schemes and scholarships easily, in English and Marathi."
+    "title": "Shidori — शिदोरी",
+    "tagline": "For the dreams of farmers' children — a shidori packed with Maharashtra's love!",
+    "intro": [
+      "Marathwada, Vidarbha and many other parts of Maharashtra are facing drought. With crops lost and farm income falling, many farming families are in financial difficulty.",
+      "Every farming parent dreams that their children will study well, become officers, doctors or engineers, and stand on their own feet. But drought can affect their children's education too.",
+      "Many students from across Maharashtra come to Pune and Pimpri-Chinchwad to study and to prepare for competitive exams such as MPSC and UPSC."
+    ],
+    "drought": {
+      "title": "Drought at home, hardship for children studying in the city",
+      "body": [
+        "While their farming parents battle drought back in the village, students in the city have to pay for rent, travel, study material and daily meals.",
+        "When farm income drops, it becomes hard for parents to send money. Some students may even have to cut back on what they eat."
+      ]
+    },
+    "meals": {
+      "title": "The worry of meals on the road to education",
+      "body": [
+        "Along with determination and hard work, studying needs regular, sufficient meals. If the worry about food is eased, students can focus more on their studies and their families get some relief too.",
+        "We may not be able to cover the whole cost of education, but we can certainly lend a hand with their meals."
+      ]
+    },
+    "idea": {
+      "title": "And from this thought, Shidori is born",
+      "body": [
+        "A 'shidori' is the bundle of food a mother packs for her children. It holds not just food, but a mother's affection, care and love.",
+        "This initiative begins with the hope that society, too, can give such a shidori of love to students who have left home to study.",
+        "Because whichever district a student comes from, they belong to our Maharashtra."
+      ]
+    },
+    "plan": {
+      "title": "What exactly will Shidori do?",
+      "intro": "Shidori's main aim is to build a system that gives financial support for meals to students who are in financial need and eligible.",
+      "points": [
+        "At first, the focus will be on students in Pune and Pimpri-Chinchwad preparing for MPSC, UPSC and other competitive exams.",
+        "The proposal is to give meal support of ₹3,000 to ₹3,500 per month.",
+        "Students who eat at a mess or cook for themselves will both be considered.",
+        "Support will be decided after verifying each student's financial situation and documents.",
+        "Students' dignity and privacy will be protected."
+      ]
+    },
+    "donors": {
+      "title": "Why should donors take part?",
+      "body": [
+        "Shidori offers the chance to pay for one student's meals for a day or for a month.",
+        "Contributions large and small from entrepreneurs, businesses, salaried professionals, social organisations and generous citizens can help many students.",
+        "Proper accounting of donations and transparent use of funds will be a priority."
+      ]
+    },
+    "spirit": {
+      "title": "The true spirit behind Shidori",
+      "body": [
+        "The farmer toils, parents strive for their children's future, and students work hard to fulfil their dreams.",
+        "Taking on a small share of their meals as a society, on this journey, is the true spirit behind Shidori."
+      ]
+    },
+    "appeal": {
+      "title": "An appeal to the people of Maharashtra",
+      "body": [
+        "Vidarbha, Marathwada, Western Maharashtra, Khandesh or Konkan — these children are Maharashtra's own.",
+        "Come, let us add a mouthful to the meals of drought-hit farming families' children on their journey through education!"
+      ]
+    },
+    "closing": {
+      "tagline": "Our shidori for your determination!",
+      "body": "A commitment that honours the farmer's labour, supports students' dreams and brings Maharashtra's humanity together."
+    },
+    "cta": {
+      "student": "Register as a student",
+      "donor": "Donate now"
+    },
+    "org": {
+      "title": "An initiative of Angholichi Goli (Bath Pill)",
+      "body": "Shidori is an initiative of Angholichi Goli (Bath Pill), a Pune-based social organisation. Guided by transparency, accountability and inclusiveness, it works in social welfare, health, education and the environment.",
+      "website": "Visit the website",
+      "follow": "Follow us"
+    },
+    "images": {
+      "farmer": "A farmer standing in his field",
+      "drought": "Dry, cracked earth in a drought",
+      "meals": "A Maharashtrian thali with pav, misal and vegetables",
+      "logo": "The Shidori logo — a student studying, a farmer and a tiffin box",
+      "student": "A student reading in a library"
+    }
   },
   "contact": {
     "title": "Contact us",
-    "body": "Have a question? Reach out to us and we will get back to you.",
+    "body": "Get in touch with questions, to donate, or to volunteer with us.",
     "name": "Name",
     "email": "Email",
     "message": "Message",
-    "submit": "Send"
+    "submit": "Send",
+    "detailsTitle": "Contact details",
+    "location": "Pune, Maharashtra",
+    "phones": "Phone",
+    "emails": "Email",
+    "whatsapp": "Join our WhatsApp group",
+    "formTitle": "Send us a message"
   },
   "notFound": {
     "title": "Page not found",
@@ -160,12 +259,12 @@
     "auth": {
       "invalid_credentials": "Incorrect mobile number / email or password",
       "email_exists": "An account with this email already exists",
-      "wrong_portal": "This account is registered as {{role}}. Please use the {{role}} login.",
       "inactive": "This account has been deactivated. Please contact the administrator.",
       "not_authenticated": "Please log in to continue",
       "invalid_token": "Your session has expired. Please log in again.",
       "forbidden": "You do not have permission to access this",
-      "phone_exists": "An account with this mobile number already exists"
+      "phone_exists": "An account with this mobile number already exists",
+      "login_closed": "Login is not available for this account. Please contact the administrator."
     },
     "student": {
       "invalid_aadhaar": "Enter a valid 12-digit Aadhaar number",
@@ -679,5 +778,18 @@
     },
     "empty": "No donations found",
     "noneForDonor": "This donor has not donated yet."
+  },
+  "social": {
+    "title": "Social media"
+  },
+  "donateQr": {
+    "title": "Scan & donate",
+    "body": "Scan this QR code with any UPI app (GPay, PhonePe, Paytm, BHIM) to support Shidori directly.",
+    "merchant": "Payee",
+    "upiId": "UPI ID",
+    "payOnPhone": "Pay with a UPI app",
+    "copy": "Copy",
+    "copied": "Copied",
+    "alt": "Angholichi Goli — SBI UPI payment QR code"
   }
 }

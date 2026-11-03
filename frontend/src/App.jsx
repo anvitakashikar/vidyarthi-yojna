@@ -1,6 +1,7 @@
 import { Navigate, Routes, Route } from 'react-router-dom'
 
 import Layout from './components/layout/Layout'
+import GuestRoute from './components/GuestRoute'
 import OnboardingGate from './components/OnboardingGate'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
@@ -11,10 +12,7 @@ import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import StudentDashboard from './pages/dashboard/StudentDashboard'
 import StudentOnboarding from './pages/student/StudentOnboarding'
-import DonorDashboard from './pages/dashboard/DonorDashboard'
 import DonorsList from './pages/dashboard/DonorsList'
-import DonorOnboarding from './pages/donor/DonorOnboarding'
-import Donate from './pages/donor/Donate'
 import AdminDashboard from './pages/dashboard/AdminDashboard'
 import StudentDirectory from './pages/dashboard/StudentDirectory'
 import Requirements from './pages/dashboard/Requirements'
@@ -25,26 +23,22 @@ export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
+        <Route element={<GuestRoute />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
 
-        <Route path="login" element={<Navigate to="/login/student" replace />} />
-        <Route path="login/:role" element={<Login />} />
-        <Route path="register" element={<Navigate to="/register/student" replace />} />
-        <Route path="register/:role" element={<Register />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          {/* Old per-role links (/login/student, /register/student, …) */}
+          <Route path="login/*" element={<Navigate to="/login" replace />} />
+          <Route path="register/*" element={<Navigate to="/register" replace />} />
+        </Route>
 
         <Route element={<ProtectedRoute roles={['student']} />}>
           <Route path="student/onboarding" element={<StudentOnboarding />} />
           <Route element={<OnboardingGate />}>
             <Route path="student" element={<StudentDashboard />} />
-          </Route>
-        </Route>
-        <Route element={<ProtectedRoute roles={['donor']} />}>
-          <Route path="donor/onboarding" element={<DonorOnboarding />} />
-          <Route element={<OnboardingGate />}>
-            <Route path="donor" element={<DonorDashboard />} />
-            <Route path="donor/donate" element={<Donate />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute roles={['admin']} />}>
@@ -56,7 +50,9 @@ export default function App() {
           <Route path="admin/donors" element={<DonorsList />} />
         </Route>
 
-        <Route path="*" element={<NotFound />} />
+        <Route element={<GuestRoute />}>
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Route>
     </Routes>
   )

@@ -1,11 +1,12 @@
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.router import api_router
@@ -18,6 +19,7 @@ from app.repositories.users import seed_admin
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
 
 
 @asynccontextmanager
@@ -82,4 +84,26 @@ app.include_router(api_router, prefix=settings.API_PREFIX)
 
 @app.get("/")
 async def root():
+    frontend_index = FRONTEND_DIST / "index.html"
+    if frontend_index.is_file():
+        return FileResponse(frontend_index)
     return {"name": settings.APP_NAME, "docs": "/docs"}
+
+
+@app.get("/{path:path}")
+async def frontend_routes(path: str):
+    api_prefix = settings.API_PREFIX.strip("/")
+    if path == api_prefix or path.startswith(f"{api_prefix}/"):
+        raise StarletteHTTPException(status_code=404, detail="Not Found")
+
+    frontend_index = FRONTEND_DIST / "index.html"
+    if not frontend_index.is_file():
+        raise StarletteHTTPException(status_code=404, detail="Not Found")
+
+    frontend_root = FRONTEND_DIST.resolve()
+    requested_file = (FRONTEND_DIST / path).resolve()
+    if requested_file.is_relative_to(frontend_root) and requested_file.is_file():
+        return FileResponse(requested_file)
+    if path.startswith("assets/"):
+        raise StarletteHTTPException(status_code=404, detail="Not Found")
+    return FileResponse(frontend_index)

@@ -1,4 +1,7 @@
-const locale = (lang) => (lang?.startsWith('mr') ? 'mr-IN' : 'en-IN')
+const locale = (lang) => {
+  const language = lang?.split('-')[0]
+  return language === 'mr' || language === 'hi' ? `${language}-IN` : 'en-IN'
+}
 
 export function formatRupees(amount, lang) {
   if (amount == null || amount === '') return '—'

@@ -1,6 +1,6 @@
 # Vidyarthi Yojna | विद्यार्थी योजना
 
-Bilingual (English / मराठी) student schemes platform.
+Multilingual student schemes platform with Marathi as the default language and English and Hindi options.
 
 **Stack:** FastAPI · React (Vite) · Tailwind CSS v4 · MongoDB
 
@@ -49,7 +49,7 @@ Vidyarthi yojna/
     └── src/
         ├── main.jsx, App.jsx, index.css
         ├── i18n/
-        │   ├── index.js        # i18next setup, persists choice, syncs <html lang>
+        │   ├── index.js        # i18next setup, defaults to Marathi, persists language choice
         │   └── locales/        # en.json, mr.json — every UI string lives here
         ├── hooks/useLocalized.js   # Picks en/mr from bilingual DB fields
         ├── services/api.js     # Axios client; attaches the JWT
@@ -74,24 +74,34 @@ Use an existing local MongoDB on `localhost:27017`, or start one with Docker:
 docker compose up -d
 ```
 
-### 2. Backend (Python 3.10+ required)
+### 2. Build the frontend
+```bash
+cd frontend
+npm install
+npm run build
+```
+
+### 3. Start the combined app (Python 3.10+ required)
 ```bash
 cd backend
 py -3.11 -m venv .venv          # Windows; use python3.11 on macOS/Linux
 .venv\Scripts\activate          # Windows  (source .venv/bin/activate on macOS/Linux)
 pip install -r requirements.txt
 copy .env.example .env          # cp on macOS/Linux
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --host 0.0.0.0 --port 5000
 ```
-API docs: http://localhost:8000/docs · Health: http://localhost:8000/api/v1/health
+Open the website at http://localhost:5000. The backend API is available under
+`/api/v1`, with interactive docs at http://localhost:5000/docs and health at
+http://localhost:5000/api/v1/health.
 
-### 3. Frontend
+### Frontend development mode (optional)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Open http://localhost:5173 and use the **English / मराठी** toggle in the header.
+For hot reload, leave the backend running on port 5000 and open
+http://localhost:5173. Vite proxies `/api` requests to the backend.
 
 ## Demo accounts
 
@@ -199,9 +209,9 @@ Students must complete all three sections before the dashboard opens (`/student/
 Gradient from navy **#023b77** to teal **#039583**, defined in [index.css](frontend/src/index.css):
 `brand-*` (navy), `accent-*` (teal), and the utilities `bg-brand-gradient` / `text-brand-gradient`.
 
-## Bilingual conventions
+## Language conventions
 
 - **Backend is English-only.** Error responses look like `{ success, code, message, data }`. `code` (e.g. `auth.invalid_credentials`) is stable. Add new codes in `backend/app/core/errors.py`.
-- **UI text:** never hard-code strings. Add a key to both `frontend/src/i18n/locales/en.json` and `mr.json`, then use `t('section.key')`.
-- **Backend errors in the UI:** add a matching `errors.<code>` key to both locale files. `apiErrorMessage(err, t)` translates it, falling back to the English message.
+- **UI text:** never hard-code strings. Add a key to `frontend/src/i18n/locales/en.json`, `mr.json`, and `hi.json`, then use `t('section.key')`. Marathi is the default; the language choice is saved in the browser.
+- **Backend errors in the UI:** add a matching `errors.<code>` key to the locale files. `apiErrorMessage(err, t)` translates it, falling back to English.
 - **Data in MongoDB:** store user-facing content (e.g. scheme titles) as `LocalizedText` — `{ "en": "...", "mr": "..." }` — and render it with `useLocalized()` on the frontend.

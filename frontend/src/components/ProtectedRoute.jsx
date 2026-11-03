@@ -11,7 +11,7 @@ export default function ProtectedRoute({ roles }) {
 
   if (loading) return <p className="py-16 text-center text-slate-500">{t('common.loading')}</p>
 
-  if (!user) return <Navigate to={`/login/${roles[0]}`} replace state={{ from: location.pathname }} />
+  if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />
 
   // Logged in but wrong role → send them to their own dashboard
   if (!roles.includes(user.role)) return <Navigate to={`/${user.role}`} replace />

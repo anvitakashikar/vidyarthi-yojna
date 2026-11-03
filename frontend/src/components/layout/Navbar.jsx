@@ -23,11 +23,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
 
   const items = user
-    ? [
-        ...NAV_ITEMS,
-        { to: `/${user.role}`, key: 'nav.dashboard', end: true },
-        ...(user.role === 'donor' ? [{ to: '/donor/donate', key: 'nav.donate' }] : []),
-      ]
+    ? [{ to: `/${user.role}`, key: 'nav.dashboard', end: true }]
     : NAV_ITEMS
 
   const onLogout = () => {
@@ -44,7 +40,7 @@ export default function Navbar() {
       </button>
     </>
   ) : (
-    <Link to="/login/student" onClick={() => setOpen(false)} className="rounded-md bg-brand-gradient px-3 py-1.5 text-sm font-medium text-white hover:brightness-110">
+    <Link to="/login" onClick={() => setOpen(false)} className="rounded-md bg-brand-gradient px-3 py-1.5 text-sm font-medium text-white hover:brightness-110">
       {t('nav.login')}
     </Link>
   )
@@ -53,8 +49,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="h-1 bg-brand-gradient" aria-hidden="true" />
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link to="/" className="text-brand-gradient text-lg font-bold">
-          {t('app.name')}
+        <Link to={user ? `/${user.role}` : '/'} className="shrink-0">
+          <img src="/brand/logo-sm.png" alt={t('app.name')} width="219" height="144" className="h-14 w-auto sm:h-16" />
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
