@@ -1,11 +1,12 @@
 """Student sign-up sections.
 
-    Section 1  personal   — sent with registration; PUT /personal to edit
-    Section 2  aadhaar    — POST /aadhaar/read (upload + auto-read) then PUT /aadhaar (confirm)
-               bank       — PUT /bank (details + bank statement upload)
-    Section 3  expenses   — PUT /expenses (monthly mess bill + abhyasika)
+    Section 1  personal          — sent with registration; PUT /personal to edit
+    Section 2  aadhaar           — POST /aadhaar/read (upload + auto-read) then PUT /aadhaar (confirm)
+               bank              — PUT /bank (details + bank statement upload)
+               enrollment_proof  — PUT /enrollment-proof (ID card, marksheet or admit card)
+    Section 3  expenses          — PUT /expenses (monthly mess bill)
 
-When all four are saved the student's `onboarding_complete` flag is set.
+When all five are saved the student's `onboarding_complete` flag is set.
 """
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional
@@ -21,6 +22,7 @@ from app.core.errors import AppError
 from app.core.validators import calculate_age, normalize_aadhaar, title_case
 from app.db.mongodb import get_database
 from app.models.base import utc_now
+from app.models.student import PROOF_TYPES
 from app.models.user import Role
 from app.repositories.students import DocumentRepository, StudentRepository
 from app.repositories.users import UserRepository
@@ -229,7 +231,40 @@ async def save_bank(
     return await _sync_user_onboarding(user_id, profile)
 
 
-# ------------------------------------------------------------------ section 3: mess + abhyasika
+# ------------------------------------------------------------------ section 2: enrollment proof
+
+
+@router.put("/enrollment-proof", response_model=StudentProfileResponse)
+async def save_enrollment_proof(
+    proof_type: str = Form(...),
+    proof_file: Optional[UploadFile] = File(None),
+    user: Dict[str, Any] = Depends(current_student),
+):
+    """ID card, latest marksheet or exam admit card, as proof the student is enrolled."""
+    if proof_type not in PROOF_TYPES:
+        raise AppError("student.invalid_proof_type")
+
+    user_id = str(user["_id"])
+    students = StudentRepository(get_database())
+    existing = (await students.get_by_user(user_id) or {}).get("enrollment_proof") or {}
+    document_id = existing.get("document_id")
+    if has_file(proof_file):
+        document_id = await store_document(user_id, "enrollment_proof", proof_file)
+    if not document_id:
+        raise AppError("student.enrollment_proof_required")
+
+    profile = await students.upsert_section(
+        user_id,
+        "enrollment_proof",
+        {"proof_type": proof_type, "document_id": document_id, "submitted_at": utc_now()},
+    )
+    old = existing.get("document_id")
+    if old and old != document_id:
+        await DocumentRepository(get_database()).delete_with_file(old)
+    return await _sync_user_onboarding(user_id, profile)
+
+
+# ------------------------------------------------------------------ section 3: mess
 
 
 def _amount(value: Optional[str], error: str) -> int:
@@ -249,18 +284,13 @@ async def save_expenses(
     mess_address: Optional[str] = Form(None),
     mess_monthly_bill: Optional[str] = Form(None),
     mess_receipt: Optional[UploadFile] = File(None),
-    uses_abhyasika: bool = Form(...),
-    abhyasika_name: Optional[str] = Form(None),
-    abhyasika_address: Optional[str] = Form(None),
-    abhyasika_monthly_fee: Optional[str] = Form(None),
-    abhyasika_receipt: Optional[UploadFile] = File(None),
     user: Dict[str, Any] = Depends(current_student),
 ):
-    """Monthly mess bill and abhyasika (study place) details. Receipts are optional."""
+    """Monthly mess bill details. Receipt is optional."""
     user_id = str(user["_id"])
     students = StudentRepository(get_database())
     existing = (await students.get_by_user(user_id) or {}).get("expenses") or {}
-    old_mess, old_abhyasika = existing.get("mess") or {}, existing.get("abhyasika") or {}
+    old_mess = existing.get("mess") or {}
 
     mess: Dict[str, Any] = {"uses_mess": uses_mess}
     if uses_mess:
@@ -275,27 +305,10 @@ async def save_expenses(
             else old_mess.get("receipt_document_id"),
         )
 
-    abhyasika: Dict[str, Any] = {"uses_abhyasika": uses_abhyasika}
-    if uses_abhyasika:
-        if not (abhyasika_name or "").strip():
-            raise AppError("student.abhyasika_details_required")
-        abhyasika.update(
-            name=abhyasika_name.strip()[:150],
-            address=(abhyasika_address or "").strip()[:300],
-            monthly_fee=_amount(abhyasika_monthly_fee, "student.abhyasika_details_required"),
-            receipt_document_id=await store_document(user_id, "abhyasika_receipt", abhyasika_receipt)
-            if has_file(abhyasika_receipt)
-            else old_abhyasika.get("receipt_document_id"),
-        )
+    profile = await students.upsert_section(user_id, "expenses", {"mess": mess, "submitted_at": utc_now()})
 
-    profile = await students.upsert_section(
-        user_id, "expenses", {"mess": mess, "abhyasika": abhyasika, "submitted_at": utc_now()}
-    )
-
-    documents = DocumentRepository(get_database())
-    for old, new in ((old_mess, mess), (old_abhyasika, abhyasika)):
-        if old.get("receipt_document_id") and old.get("receipt_document_id") != new.get("receipt_document_id"):
-            await documents.delete_with_file(old["receipt_document_id"])
+    if old_mess.get("receipt_document_id") and old_mess.get("receipt_document_id") != mess.get("receipt_document_id"):
+        await DocumentRepository(get_database()).delete_with_file(old_mess["receipt_document_id"])
     return await _sync_user_onboarding(user_id, profile)
 
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any, Dict, Literal, Optional
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from app.models.user import Role
 from app.schemas.fields import Name, OptionalEmail, Password, Phone
@@ -29,6 +29,8 @@ class RegisterRequest(BaseModel):
     role: Literal["student"] = "student"
     preferred_language: Literal["en", "mr", "hi"] = "mr"  # UI language the user picked
     student_details: Optional[StudentPersonalDetails] = None
+    # Returned by /auth/otp/verify once the student has entered the SMS code
+    phone_token: str = Field(default="", max_length=1000)
 
     @model_validator(mode="after")
     def _contact_required(self) -> "RegisterRequest":
@@ -51,6 +53,25 @@ class AdminCreateUserRequest(BaseModel):
     def _contact_required(self) -> "AdminCreateUserRequest":
         _check_contact(self.role.value, self.phone, self.email)
         return self
+
+
+class OtpSendRequest(BaseModel):
+    phone: Phone
+
+    @field_validator("phone")
+    @classmethod
+    def _required(cls, value: Optional[str]) -> str:
+        if not value:
+            raise ValueError("Mobile number is required")
+        return value
+
+
+class OtpVerifyRequest(OtpSendRequest):
+    code: str = Field(pattern=r"^\d{4,10}$", description="The code from the SMS")
+
+
+class OtpVerifyResponse(BaseModel):
+    phone_token: str
 
 
 class LoginRequest(BaseModel):

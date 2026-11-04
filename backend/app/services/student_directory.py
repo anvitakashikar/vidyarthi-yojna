@@ -42,8 +42,6 @@ COLUMNS = [
     ("account", "Account no."),
     ("mess_name", "Mess"),
     ("mess_monthly_bill", "Mess bill / month (₹)"),
-    ("abhyasika_name", "Abhyasika"),
-    ("abhyasika_monthly_fee", "Abhyasika fee / month (₹)"),
     ("monthly_total", "Total / month (₹)"),
     ("eligibility_label", "Eligibility"),
     ("eligibility_reason", "Eligibility reason"),
@@ -59,8 +57,8 @@ _REASON_LABELS = {
     "aadhaar_mismatch": "Details do not match Aadhaar card",
     "bank_statement_unclear": "Bank statement unclear",
     "bank_details_mismatch": "Bank details do not match statement",
+    "enrollment_proof_unclear": "Enrollment proof unclear, incomplete or expired",
     "mess_details": "Mess details incorrect",
-    "abhyasika_details": "Abhyasika details incorrect",
     "personal_details": "Basic details incorrect",
     "other": "Other",
 }
@@ -116,12 +114,10 @@ def to_row(doc: Dict[str, Any]) -> Dict[str, Any]:
     bank = doc.get("bank") or {}
     expenses = doc.get("expenses") or {}
     mess = expenses.get("mess") or {}
-    abhyasika = expenses.get("abhyasika") or {}
 
     dob = aadhaar.get("dob")
     mess_bill = mess.get("monthly_bill") if mess.get("uses_mess") else None
-    abhyasika_fee = abhyasika.get("monthly_fee") if abhyasika.get("uses_abhyasika") else None
-    total = (mess_bill or 0) + (abhyasika_fee or 0) if expenses else None
+    total = (mess_bill or 0) if expenses else None
     created = doc.get("created_at")
     elig = doc.get("eligibility") or {}
     elig_status = elig.get("status", "pending")
@@ -151,8 +147,6 @@ def to_row(doc: Dict[str, Any]) -> Dict[str, Any]:
         "account": decrypt(bank["account_number_enc"]) if bank.get("account_number_enc") else "",
         "mess_name": mess.get("name") or ("Not using" if expenses and not mess.get("uses_mess") else ""),
         "mess_monthly_bill": mess_bill,
-        "abhyasika_name": abhyasika.get("name") or ("Not using" if expenses and not abhyasika.get("uses_abhyasika") else ""),
-        "abhyasika_monthly_fee": abhyasika_fee,
         "monthly_total": total,
         "eligibility": elig_status,
         "eligibility_reasons": elig.get("reasons", []),

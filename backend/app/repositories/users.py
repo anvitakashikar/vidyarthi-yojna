@@ -48,6 +48,7 @@ class UserRepository(BaseRepository):
         email: Optional[str] = None,
         phone: Optional[str] = None,
         preferred_language: str = "mr",
+        phone_verified: bool = False,
     ) -> Dict[str, Any]:
         role = Role(role)
         return await self.create(
@@ -55,6 +56,7 @@ class UserRepository(BaseRepository):
                 "name": name.strip(),
                 "email": email.strip().lower() if email else None,
                 "phone": phone,
+                "phone_verified": phone_verified,
                 "password_hash": hash_password(password),
                 "role": role.value,
                 "preferred_language": preferred_language,

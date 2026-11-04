@@ -4,7 +4,7 @@
     payments   money paid to a student for one month (debits), one per student per month
 
 Money left = total received − total paid. The amount due to a student for a
-month is their monthly requirement (mess bill + abhyasika fee) at the time of payment.
+month is their monthly requirement (mess bill) at the time of payment.
 """
 import re
 from datetime import date
@@ -31,12 +31,9 @@ def check_period(period: Optional[str]) -> str:
 
 
 def monthly_requirement(doc: Dict[str, Any]) -> Dict[str, int]:
-    expenses = doc.get("expenses") or {}
-    mess = expenses.get("mess") or {}
-    abhyasika = expenses.get("abhyasika") or {}
+    mess = (doc.get("expenses") or {}).get("mess") or {}
     mess_amount = (mess.get("monthly_bill") or 0) if mess.get("uses_mess") else 0
-    abhyasika_amount = (abhyasika.get("monthly_fee") or 0) if abhyasika.get("uses_abhyasika") else 0
-    return {"mess": mess_amount, "abhyasika": abhyasika_amount, "total": mess_amount + abhyasika_amount}
+    return {"mess": mess_amount, "total": mess_amount}
 
 
 async def sum_amounts(db: AsyncDatabase, collection: str, match: Optional[Dict[str, Any]] = None) -> Dict[str, int]:

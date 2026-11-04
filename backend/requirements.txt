@@ -8,6 +8,7 @@ python-dotenv>=1.0
 python-multipart>=0.0.9
 bcrypt>=4.2
 PyJWT>=2.9
+httpx>=0.27  # Twilio Verify (OTP SMS)
 cryptography>=42.0
 
 # Aadhaar reading: QR decoding, PDF rendering, Claude AI fallback

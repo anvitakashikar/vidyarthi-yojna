@@ -1,10 +1,11 @@
 """Student record — one document per student in the `students` collection.
 
 The sign-up is split into sections, each stored as a sub-document:
-    personal   section 1 — gender, guardian, college, course
-    aadhaar    section 2 — Aadhaar card (+ DOB, taluka read from it)
-    bank       section 2 — bank details + bank statement
-    expenses   section 3 — monthly mess bill and abhyasika (study place)
+    personal           section 1 — gender, guardian, college, course
+    aadhaar            section 2 — Aadhaar card (+ DOB, taluka read from it)
+    bank               section 2 — bank details + bank statement
+    enrollment_proof   section 2 — ID card, marksheet or admit card
+    expenses           section 3 — monthly mess bill
 
 `name`, `phone` and `email` are copied from the user account so the student
 directory can be searched and exported from this one collection.
@@ -20,7 +21,9 @@ from pydantic import BaseModel
 
 from app.models.base import MongoBaseModel
 
-SECTIONS = ("personal", "aadhaar", "bank", "expenses")
+SECTIONS = ("personal", "aadhaar", "bank", "enrollment_proof", "expenses")
+
+PROOF_TYPES = ("id_card", "marksheet", "admit_card")
 
 
 class PersonalInfo(BaseModel):
@@ -66,6 +69,12 @@ class BankInfo(BaseModel):
     submitted_at: datetime
 
 
+class EnrollmentProofInfo(BaseModel):
+    proof_type: str             # id_card | marksheet | admit_card
+    document_id: str
+    submitted_at: datetime
+
+
 class MessInfo(BaseModel):
     uses_mess: bool
     name: Optional[str] = None
@@ -74,17 +83,8 @@ class MessInfo(BaseModel):
     receipt_document_id: Optional[str] = None
 
 
-class AbhyasikaInfo(BaseModel):
-    uses_abhyasika: bool
-    name: Optional[str] = None
-    address: Optional[str] = None
-    monthly_fee: Optional[int] = None       # rupees
-    receipt_document_id: Optional[str] = None
-
-
 class ExpensesInfo(BaseModel):
     mess: MessInfo
-    abhyasika: AbhyasikaInfo
     submitted_at: datetime
 
 
@@ -96,6 +96,7 @@ class StudentRecord(MongoBaseModel):
     personal: Optional[PersonalInfo] = None
     aadhaar: Optional[AadhaarInfo] = None
     bank: Optional[BankInfo] = None
+    enrollment_proof: Optional[EnrollmentProofInfo] = None
     expenses: Optional[ExpensesInfo] = None
     onboarding_complete: bool = False
     verification_status: str = "pending"  # pending | verified | rejected (set by admin later)
@@ -105,7 +106,7 @@ class Document(MongoBaseModel):
     """Metadata for an uploaded file (`documents` collection). The file itself is encrypted on disk."""
 
     owner_user_id: str
-    kind: str                # aadhaar | bank_statement | mess_receipt | abhyasika_receipt
+    kind: str                # aadhaar | bank_statement | enrollment_proof | mess_receipt
     original_filename: str
     content_type: str
     size_bytes: int

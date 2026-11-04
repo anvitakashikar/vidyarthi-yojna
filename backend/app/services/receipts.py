@@ -13,11 +13,13 @@ from pymongo.asynchronous.database import AsyncDatabase
 from app.core.config import settings
 from app.db.collections import Collections
 
-NAVY = (2, 59, 119)    # #023b77
-TEAL = (3, 149, 131)   # #039583
+NAVY = (163, 7, 74)    # brand magenta #a3074a (name kept from the old palette)
+TEAL = (47, 122, 23)   # accent leaf green #2f7a17
 SLATE = (71, 85, 105)
 
-METHOD_LABELS = {"upi": "UPI", "netbanking": "Net banking", "card": "Card"}
+FOUNDATION_NAME = "Make Earth Happy Foundation"
+
+METHOD_LABELS = {"upi": "UPI", "netbanking": "Net banking", "card": "Card", "wallet": "Wallet / other"}
 
 
 def financial_year(d: date) -> str:
@@ -92,7 +94,9 @@ def method_details(donation: Dict[str, Any]) -> str:
     if method == "netbanking":
         return f"Bank: {d.get('bank_name', '')}"
     if method == "card":
-        return f"{d.get('card_type', '').capitalize()} card ending {d.get('card_last4', '')}" + (f" ({d['card_network']})" if d.get("card_network") else "")
+        return f"{(d.get('card_type') or '').capitalize()} card ending {d.get('card_last4', '')}" + (f" ({d['card_network']})" if d.get("card_network") else "")
+    if method == "wallet":
+        return f"Wallet: {d.get('wallet', '')}"
     return ""
 
 
@@ -114,7 +118,7 @@ def render_receipt(donation: Dict[str, Any]) -> bytes:
     pdf.cell(w, 10, settings.APP_NAME)
     pdf.set_xy(15, 22)
     pdf.set_font("Helvetica", "", 10)
-    pdf.cell(w, 6, "Supporting students' mess and study-place (abhyasika) expenses")
+    pdf.cell(w, 6, f"{FOUNDATION_NAME} - meal support for students from drought-hit farming families")
 
     # Title + number
     pdf.set_text_color(*NAVY)
@@ -132,7 +136,7 @@ def render_receipt(donation: Dict[str, Any]) -> bytes:
     pdf.cell(w / 2, 5, f"Date: {created.strftime('%d %b %Y')}", align="R")
 
     # Amount box
-    pdf.set_fill_color(230, 246, 243)
+    pdf.set_fill_color(240, 249, 236)
     pdf.set_draw_color(*TEAL)
     pdf.rect(15, 72, w, 30, "DF")
     pdf.set_xy(20, 77)
@@ -151,26 +155,30 @@ def render_receipt(donation: Dict[str, Any]) -> bytes:
     # Details table
     rows = [
         ("Received from", donation["donor_name"]),
+        ("Address", donation.get("address") or ""),
         ("PAN", donation.get("pan") or "-"),
         ("Mobile", donation.get("phone") or "-"),
         ("Email", donation.get("email") or "-"),
         ("Payment method", METHOD_LABELS.get(donation["method"], donation["method"])),
         ("Payment details", method_details(donation)),
         ("Transaction reference", donation.get("reference") or "-"),
-        ("Purpose", "Donation towards student mess bills and abhyasika fees"),
+        ("Purpose", "Donation towards meal support for students"),
     ]
     y = 112
     for label, value in rows:
-        pdf.set_draw_color(226, 232, 240)
-        pdf.line(15, y + 9, 15 + w, y + 9)
+        if not value:
+            continue  # e.g. no address on donations recorded before it was collected
         pdf.set_xy(15, y + 2)
         pdf.set_text_color(*SLATE)
         pdf.set_font("Helvetica", "", 10)
         pdf.cell(55, 6, label)
         pdf.set_text_color(15, 23, 42)
         pdf.set_font("Helvetica", "B", 10)
-        pdf.cell(w - 55, 6, _latin1(value))
-        y += 10
+        # Long values (addresses) wrap onto extra lines
+        pdf.multi_cell(w - 55, 6, _latin1(value), align="L")
+        y = max(y + 10, pdf.get_y() + 3)
+        pdf.set_draw_color(226, 232, 240)
+        pdf.line(15, y - 1, 15 + w, y - 1)
 
     # Thank-you + footer
     pdf.set_xy(15, y + 10)

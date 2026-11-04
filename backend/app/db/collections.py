@@ -16,3 +16,5 @@ class Collections:
     PAYMENTS = "payments"          # monthly payouts to students
     DONATIONS = "donations"        # donor donations (each has a receipt)
     COUNTERS = "counters"          # sequential receipt numbers
+    DONATION_ORDERS = "donation_orders"  # Razorpay orders, before and after payment
+    OTP_REQUESTS = "otp_requests"  # one-time codes sent to verify mobile numbers

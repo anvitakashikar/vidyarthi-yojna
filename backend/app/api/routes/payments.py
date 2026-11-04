@@ -14,7 +14,8 @@ from app.db.collections import Collections
 from app.db.mongodb import get_database
 from app.models.base import utc_now
 from app.models.user import Role
-from app.services import payments
+from app.repositories.users import UserRepository
+from app.services import notifications, payments
 from app.services.requirements import ACCEPTED
 
 router = APIRouter(prefix="/admin", tags=["Payments"], dependencies=[Depends(require_roles(Role.ADMIN))])
@@ -69,7 +70,6 @@ async def _due_students(period: str, search: Optional[str] = None) -> List[Dict[
             "district": aadhaar.get("district", ""),
             "amount": need["total"],
             "mess": need["mess"],
-            "abhyasika": need["abhyasika"],
             "bank": _bank(doc),
         })
     return due
@@ -108,7 +108,7 @@ async def payments_made(period: Optional[str] = None, limit: int = Query(200, ge
 
 
 def _payment_out(p: Dict[str, Any]) -> Dict[str, Any]:
-    return {k: p.get(k) for k in ("user_id", "student_name", "period", "amount", "mess", "abhyasika", "reference", "note", "account_last4", "ifsc", "by_name", "created_at")} | {"id": str(p["_id"])}
+    return {k: p.get(k) for k in ("user_id", "student_name", "period", "amount", "mess", "reference", "note", "account_last4", "ifsc", "by_name", "created_at")} | {"id": str(p["_id"])}
 
 
 @router.post("/payments", status_code=status.HTTP_201_CREATED)
@@ -139,7 +139,6 @@ async def record_payment(body: PaymentRequest, admin: Dict[str, Any] = Depends(c
         "period": period,
         "amount": need["total"],
         "mess": need["mess"],
-        "abhyasika": need["abhyasika"],
         "reference": body.reference.strip(),
         "note": body.note.strip(),
         "account_last4": bank.get("account_last4", ""),
@@ -158,6 +157,12 @@ async def record_payment(body: PaymentRequest, admin: Dict[str, Any] = Depends(c
         await db[Collections.PAYMENTS].delete_one({"_id": result.inserted_id})
         raise AppError("payments.insufficient_funds", {"balance": funds["balance"], "amount": need["total"]})
     payment["_id"] = result.inserted_id
+
+    if doc.get("phone"):
+        student_user = await UserRepository(db).get(body.user_id)
+        await notifications.payment_transferred(
+            doc["phone"], doc.get("name", ""), need["total"], period, (student_user or {}).get("preferred_language")
+        )
     return _payment_out(payment)
 
 

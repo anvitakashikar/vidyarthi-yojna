@@ -10,6 +10,7 @@ from app.api.deps import require_roles
 from app.api.routes.students import document_response
 from app.core import eligibility as eligibility_rules
 from app.core.errors import AppError
+from app.db.collections import Collections
 from app.db.mongodb import get_database
 from app.models.base import utc_now
 from app.models.user import Role
@@ -19,7 +20,7 @@ from app.repositories.users import UserRepository, duplicate_key_code
 from app.schemas.auth import AdminCreateUserRequest, UserPublic
 from app.schemas.donor import AdminDonorResponse, DonorListPage
 from app.schemas.student import AdminStudentResponse, StudentDirectoryPage, VerificationRequest
-from app.services import requirements, student_directory
+from app.services import notifications, requirements, student_directory
 
 router = APIRouter(prefix="/admin", tags=["Admin"], dependencies=[Depends(require_roles(Role.ADMIN))])
 
@@ -35,6 +36,71 @@ async def stats() -> Dict[str, int]:
         if row["_id"] in counts:
             counts[row["_id"]] = row["count"]
     return counts
+
+
+# How each student's application stands, matching the status bar on their dashboard
+_APPLICATION_STATUS = {
+    "$switch": {
+        "branches": [
+            {"case": {"$ne": ["$onboarding_complete", True]}, "then": "incomplete"},
+            {"case": {"$eq": ["$eligibility.status", "not_eligible"]}, "then": "not_eligible"},
+            {"case": {"$eq": ["$verification_status", "rejected"]}, "then": "action"},
+            {
+                "case": {"$and": [{"$eq": ["$verification_status", "verified"]}, {"$eq": ["$eligibility.status", "eligible"]}]},
+                "then": "approved",
+            },
+        ],
+        "default": "review",
+    }
+}
+
+
+@router.get("/overview")
+async def overview() -> Dict[str, Any]:
+    """Figures for the admin dashboard cards: students by application status,
+    taluka and gender, and donors and money received."""
+    db = get_database()
+    students = db[Collections.STUDENTS]
+    [facets] = await (await students.aggregate([
+        {"$facet": {
+            "total": [{"$count": "n"}],
+            "status": [{"$group": {"_id": _APPLICATION_STATUS, "count": {"$sum": 1}}}],
+            "gender": [{"$group": {"_id": {"$ifNull": ["$personal.gender", ""]}, "count": {"$sum": 1}}}],
+            "taluka": [
+                {"$group": {
+                    "_id": {"taluka": {"$ifNull": ["$aadhaar.taluka", ""]}, "district": {"$ifNull": ["$aadhaar.district", ""]}},
+                    "count": {"$sum": 1},
+                }},
+                {"$sort": {"count": -1, "_id.taluka": 1}},
+            ],
+        }},
+    ])).to_list(length=1)
+
+    status_counts = {key: 0 for key in ("incomplete", "review", "action", "approved", "not_eligible")}
+    status_counts.update({row["_id"]: row["count"] for row in facets["status"]})
+    gender_counts = {key: 0 for key in ("female", "male", "other", "")}
+    for row in facets["gender"]:
+        gender_counts[row["_id"] if row["_id"] in gender_counts else ""] += row["count"]
+
+    donations = db[Collections.DONATIONS]
+    [money] = await (await donations.aggregate([
+        {"$group": {"_id": None, "amount": {"$sum": "$amount"}, "count": {"$sum": 1}}},
+    ])).to_list(length=1) or [{"amount": 0, "count": 0}]
+    # A donor is counted once however often they give: by PAN, else email, else name
+    donor_keys = await (await donations.aggregate([
+        {"$group": {"_id": {"$ifNull": ["$pan", {"$ifNull": ["$email", "$donor_name"]}]}}},
+        {"$count": "n"},
+    ])).to_list(length=1)
+
+    return {
+        "students": facets["total"][0]["n"] if facets["total"] else 0,
+        "application_status": status_counts,
+        "gender": gender_counts,
+        "taluka": [{"taluka": r["_id"]["taluka"], "district": r["_id"]["district"], "count": r["count"]} for r in facets["taluka"]],
+        "donors": donor_keys[0]["n"] if donor_keys else 0,
+        "donations_count": money["count"],
+        "amount_received": money["amount"],
+    }
 
 
 @router.get("/users", response_model=List[UserPublic])
@@ -158,6 +224,9 @@ async def set_verification(
         {"_id": doc["_id"]},
         {"$set": {"verification_status": body.status, "verification": decision}, "$push": {"verification_history": decision}},
     )
+    if body.status == "verified" and doc.get("phone"):
+        student_user = await UserRepository(get_database()).get(user_id)
+        await notifications.documents_verified(doc["phone"], doc.get("name", ""), (student_user or {}).get("preferred_language"))
     return AdminStudentResponse.from_doc(await collection.find_one({"_id": doc["_id"]}))
 
 
@@ -174,7 +243,7 @@ async def list_requirements(
     skip: int = Query(0, ge=0),
     limit: int = Query(25, ge=1, le=200),
 ):
-    """Accepted students (eligible + verified) and their monthly mess + abhyasika requirement."""
+    """Accepted students (eligible + verified) and their monthly mess requirement."""
     collection = StudentRepository(get_database()).collection
     totals = await requirements.summarize(collection, filters)
     docs = await collection.find(filters).sort("name", 1).skip(skip).limit(limit).to_list(length=limit)
@@ -192,7 +261,6 @@ async def export_requirements(filters: dict = Depends(_requirements_filter), for
     totals_row = {
         "name": f"TOTAL ({s['students']} students)",
         "mess_monthly_bill": s["mess"],
-        "abhyasika_monthly_fee": s["abhyasika"],
         "monthly_total": s["total"],
     }
     stamp = date.today().isoformat()

@@ -99,10 +99,12 @@ def main():
         ok(c.put(f"{API}/students/me/bank", headers=student,
                  data={"account_holder_name": STUDENT["name"], "account_number": "50100123456789", "ifsc": "SBIN0001234", "bank_name": "State Bank of India", "branch_name": "Pusad"},
                  files={"statement_file": ("demo-statement.pdf", demo_pdf("BANK STATEMENT"), "application/pdf")}), "save bank details")
+        ok(c.put(f"{API}/students/me/enrollment-proof", headers=student,
+                 data={"proof_type": "id_card"},
+                 files={"proof_file": ("demo-id-card.png", demo_card_png("COLLEGE ID CARD"), "image/png")}), "save enrollment proof")
         ok(c.put(f"{API}/students/me/expenses", headers=student, data={
             "uses_mess": "true", "mess_name": "Annapurna Mess", "mess_address": "Shivaji Chowk, Yavatmal", "mess_monthly_bill": "2500",
-            "uses_abhyasika": "true", "abhyasika_name": "Dnyandeep Abhyasika", "abhyasika_address": "Main Road, Yavatmal", "abhyasika_monthly_fee": "800",
-        }), "save mess & abhyasika")
+        }), "save mess")
         ok(c.patch(f"{API}/admin/students/{student_id}/verification", headers=admin, json={"status": "verified"}), "verify student")
         profile = ok(c.get(f"{API}/students/me/profile", headers=student), "read student profile")
         print(f"  student: eligibility={profile['eligibility_status']}, verification={profile['verification_status']}")

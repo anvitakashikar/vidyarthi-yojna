@@ -41,8 +41,16 @@ async def create_indexes(db: AsyncDatabase) -> None:
     await db[Collections.FUNDS].create_index([("created_at", -1)])
     await db[Collections.DONATIONS].create_index([("user_id", 1), ("created_at", -1)])
     await db[Collections.DONATIONS].create_index("receipt_no", unique=True)
+    orders = db[Collections.DONATION_ORDERS]
+    await orders.create_index("razorpay_order_id", unique=True, partialFilterExpression=_ONLY_STRINGS("razorpay_order_id"))
+    await orders.create_index([("created_at", -1)])
 
     await db[Collections.DOCUMENTS].create_index([("owner_user_id", 1), ("kind", 1)])
+
+    # OTP requests are only needed for the hourly send limit, then MongoDB removes them
+    otp = db[Collections.OTP_REQUESTS]
+    await otp.create_index([("phone", 1), ("created_at", -1)])
+    await otp.create_index("created_at", name="otp_expiry", expireAfterSeconds=60 * 60)
 
     # Placeholder examples — uncomment / adjust once the schemas are final.
     # await db[Collections.APPLICATIONS].create_index([("student_id", 1), ("scheme_id", 1)], unique=True)

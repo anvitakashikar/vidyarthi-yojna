@@ -22,7 +22,7 @@ from app.db.mongodb import get_database
 from app.models.base import utc_now
 from app.models.user import Role
 from app.repositories.donors import DonorRepository
-from app.services import payments, receipts, student_directory
+from app.services import email, payments, receipts, student_directory
 from app.services.requirements import ACCEPTED, summarize
 
 router = APIRouter(tags=["Donations"])
@@ -87,9 +87,7 @@ async def impact(user: Dict[str, Any] = Depends(donor_or_admin)):
         "students_registered": await db[Collections.STUDENTS].count_documents({}),
         "monthly_need": totals["total"],
         "mess_need": totals["mess"],
-        "abhyasika_need": totals["abhyasika"],
         "mess_students": totals["mess_users"],
-        "abhyasika_students": totals["abhyasika_users"],
         "donations_total": donations["amount"],
         "donations_count": donations["count"],
         "paid_out": funds["paid"],
@@ -161,6 +159,7 @@ DONATION_COLUMNS = [
     ("date", "Date"),
     ("receipt_no", "Receipt no."),
     ("donor_name", "Donor"),
+    ("address", "Address"),
     ("phone", "Mobile"),
     ("email", "Email"),
     ("pan", "PAN"),
@@ -173,7 +172,7 @@ DONATION_COLUMNS = [
 
 def _donation_filter(
     search: Optional[str] = None,
-    method: Optional[Literal["upi", "netbanking", "card"]] = None,
+    method: Optional[Literal["upi", "netbanking", "card", "wallet"]] = None,
     period: Optional[str] = None,
     user_id: Optional[str] = None,
 ) -> Dict[str, Any]:
@@ -198,12 +197,15 @@ def _donation_filter(
 def _admin_row(d: Dict[str, Any]) -> Dict[str, Any]:
     return {
         **_out(d),
-        "user_id": d["user_id"],
+        "user_id": d.get("user_id"),
+        "source": d.get("source", "recorded"),
+        "address": d.get("address") or "",
         "phone": d.get("phone") or "",
         "email": d.get("email") or "",
         "pan": d.get("pan") or "",
         "details": d.get("details") or {},
         "method_label": receipts.METHOD_LABELS.get(d["method"], d["method"]),
+        "receipt_email": (d.get("receipt_email") or {}).get("status", ""),
         "date": d["created_at"].date().isoformat(),
     }
 
@@ -242,6 +244,25 @@ async def export_donations(
         media = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     return Response(content, media_type=media,
                     headers={"Content-Disposition": f'attachment; filename="vidyarthi-yojna-donations-{stamp}.{format}"', "Cache-Control": "no-store"})
+
+
+@router.post("/admin/donations/{donation_id}/email-receipt")
+async def resend_receipt_email(donation_id: str, admin: Dict[str, Any] = Depends(require_roles(Role.ADMIN))):
+    """Emails the receipt to the donor again, e.g. after a failed send."""
+    from bson import ObjectId
+
+    if not ObjectId.is_valid(donation_id):
+        raise AppError("error.not_found")
+    donation = await get_database()[Collections.DONATIONS].find_one({"_id": ObjectId(donation_id)})
+    if not donation:
+        raise AppError("error.not_found")
+    if not donation.get("email"):
+        raise AppError("donation.no_email")
+    if not email.is_configured():
+        raise AppError("donation.email_unavailable")
+    if await email.email_receipt(donation):
+        raise AppError("donation.email_failed")
+    return {"status": "sent"}
 
 
 @router.get("/donations/{donation_id}/receipt")

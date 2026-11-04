@@ -57,8 +57,8 @@ CorrectionReason = Literal[
     "aadhaar_mismatch",      # entered details do not match the Aadhaar card
     "bank_statement_unclear",
     "bank_details_mismatch",  # account details do not match the statement
+    "enrollment_proof_unclear",
     "mess_details",
-    "abhyasika_details",
     "personal_details",
     "other",
 ]
@@ -129,9 +129,14 @@ class BankSummary(BaseModel):
     submitted_at: datetime
 
 
+class EnrollmentProofSummary(BaseModel):
+    proof_type: str
+    document_id: str
+    submitted_at: datetime
+
+
 class ExpensesSummary(BaseModel):
     mess: Dict[str, Any]
-    abhyasika: Dict[str, Any]
     submitted_at: datetime
 
 
@@ -156,6 +161,7 @@ class StudentProfileResponse(BaseModel):
     personal: Optional[PersonalSummary] = None
     aadhaar: Optional[AadhaarSummary] = None
     bank: Optional[BankSummary] = None
+    enrollment_proof: Optional[EnrollmentProofSummary] = None
     expenses: Optional[ExpensesSummary] = None
     sections_complete: Dict[str, bool] = {}
     onboarding_complete: bool = False
@@ -167,7 +173,7 @@ class StudentProfileResponse(BaseModel):
     def from_doc(cls, doc: Optional[Dict[str, Any]]) -> "StudentProfileResponse":
         if not doc:
             return cls(sections_complete={s: False for s in SECTIONS})
-        personal, aadhaar, bank, expenses = (doc.get(s) for s in SECTIONS)
+        personal, aadhaar, bank, enrollment_proof, expenses = (doc.get(s) for s in SECTIONS)
 
         aadhaar_summary = None
         if aadhaar:
@@ -205,6 +211,7 @@ class StudentProfileResponse(BaseModel):
             )
             if bank
             else None,
+            enrollment_proof=EnrollmentProofSummary(**enrollment_proof) if enrollment_proof else None,
             expenses=ExpensesSummary(**expenses) if expenses else None,
             sections_complete={s: bool(doc.get(s)) for s in SECTIONS},
             onboarding_complete=doc.get("onboarding_complete", False),

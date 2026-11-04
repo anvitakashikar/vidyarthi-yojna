@@ -36,6 +36,15 @@ async def lifespan(app: FastAPI):
     logger.info("CORS allowed origins: %s", settings.cors_origins_list)
     if settings.JWT_SECRET.startswith("change-me"):
         logger.warning("JWT_SECRET is using the default value. Set a strong secret in .env!")
+    if not (settings.RAZORPAY_KEY_ID and settings.RAZORPAY_KEY_SECRET):
+        logger.warning("RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET are not set: online donations are switched off.")
+    if not (settings.SMTP_HOST and settings.SMTP_FROM):
+        logger.warning("SMTP_HOST / SMTP_FROM are not set: donation receipts will not be emailed.")
+    if settings.OTP_PROVIDER == "twilio":
+        if not (settings.TWILIO_ACCOUNT_SID and settings.TWILIO_AUTH_TOKEN and settings.TWILIO_VERIFY_SERVICE_SID):
+            logger.error("OTP_PROVIDER=twilio but the TWILIO_* settings are missing. OTP SMS will fail.")
+    else:
+        logger.warning("OTP_PROVIDER=%s: OTP codes are printed in this log, not sent by SMS.", settings.OTP_PROVIDER)
     yield
     await close_mongo_connection()
 
